@@ -120,6 +120,30 @@ namespace service_plan_core
                 return sum;
             }
         }
+
+        public static void train_x_y(int[,] demand, Train_obj train,int x,int y)
+        {  
+            if (x == y)
+            {
+                // Service begin station must not the same as destination 
+            }
+            int get_off_y;
+            int actual_get_off_y;
+            Console.WriteLine("Remainning Seat : " + train.remain_cap);
+            get_off_y = demand[x, y];
+            if (train.remain_cap >= get_off_y)
+            {
+                train.remain_cap -= get_off_y;
+                actual_get_off_y = get_off_y;
+            }
+            else
+            {
+                actual_get_off_y = train.remain_cap;
+                train.remain_cap -= actual_get_off_y;
+                }
+            Console.WriteLine("x_y service serve : " + actual_get_off_y);
+            demand[x, y] -= actual_get_off_y;
+        }
     }
 
 }
