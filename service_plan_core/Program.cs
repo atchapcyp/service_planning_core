@@ -8,6 +8,7 @@ namespace service_plan_core
         {
             Console.WriteLine("Initiate Service Planning .net core");
             Console.WriteLine("Test 1st editing and commit");
+            Console.WriteLine("Test 2nd editting and commit on macbook ");
         }
     }
 }
