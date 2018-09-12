@@ -6,7 +6,7 @@ namespace service_plan_core
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Initiate Service Planning .net core");
         }
     }
 }
