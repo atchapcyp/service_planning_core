@@ -26,6 +26,100 @@ namespace service_plan_core_test
         int Add(int x, int y) {
             return x + y;
         }
+        [Fact]
+        public void Train_service_3_station()
+        {
+            int[,] demand = {
+            { 0, 10, 10, 10, 10 },
+            { 10, 0, 10, 10, 10 },
+            { 10, 10, 0, 10, 10 },
+            { 10, 10, 10, 0, 10 },
+            { 10, 10, 10, 10, 0 } };
+
+            Train_obj train = new Train_obj(10);
+            int[] service = { 1, 0, 1, 0, 1 };
+
+            int[,] expected =
+            {
+                { 0,  10,  5, 10, 5 },
+                { 10, 0,  10, 10, 10 },
+                { 10, 10, 0, 10, 5 },
+                { 10, 10, 10, 0, 10 },
+                { 10, 10, 10, 10, 0 } };
+            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Assert.Equal(expected[i, j], demand[i, j]);
+                }
+            }
+            Assert.Equal(expected, demand);
+
+        }
+
+        [Fact]
+        public void Train_service_3_station_no_overcap()
+        {
+            int[,] demand = {
+            { 0, 10, 10, 10, 10 },
+            { 10, 0, 10, 10, 10 },
+            { 10, 10, 0, 10, 10 },
+            { 10, 10, 10, 0, 10 },
+            { 10, 10, 10, 10, 0 } };
+
+            Train_obj train = new Train_obj(30);
+            int[] service = { 1, 0, 1, 0, 1 };
+
+            int[,] expected =
+            {
+                { 0,  10,  0, 10, 0 },
+                { 10, 0,  10, 10, 10 },
+                { 10, 10, 0, 10, 0 },
+                { 10, 10, 10, 0, 10 },
+                { 10, 10, 10, 10, 0 } };
+            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Assert.Equal(expected[i, j], demand[i, j]);
+                }
+            }
+            Assert.Equal(expected, demand);
+
+        }
+        [Fact]
+        public void Train_service_4_station()
+        {
+            int[,] demand = {
+            { 0, 10, 10, 10, 10 },
+            { 10, 0, 10, 10, 10 },
+            { 10, 10, 0, 10, 10 },
+            { 10, 10, 10, 0, 10 },
+            { 10, 10, 10, 10, 0 } };
+
+            Train_obj train = new Train_obj(30);
+            int[] service = { 1, 1, 1, 0, 1 };
+
+            int[,] expected =
+            {
+                { 0,  0,  0, 10, 0 },
+                { 10, 0,  5, 10, 5 },
+                { 10, 10, 0, 10, 0 },
+                { 10, 10, 10, 0, 10 },
+                { 10, 10, 10, 10, 0 } };
+            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Assert.Equal(expected[i, j], demand[i, j]);
+                }
+            }
+            Assert.Equal(expected, demand);
+
+        }
 
         [Fact]
         public void Train_service_4_station_no_overcap()

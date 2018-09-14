@@ -54,7 +54,8 @@ namespace service_plan_core
             Console.ReadLine();
         }
 
-        public static void Train_a_b_c_d_e(int[,] demand, Train_obj train,int[] service)
+        public static void Train_a_b_c_d_e(int[,] demand, Train_obj train,int[] service
+            )
         {
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;
