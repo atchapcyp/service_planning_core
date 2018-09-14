@@ -4,7 +4,7 @@ using System.Text;
 
 namespace service_plan_core
 {
-    class Train_obj
+    public class Train_obj
     {
         public int cap = 150;
         public int remain_cap = 150;

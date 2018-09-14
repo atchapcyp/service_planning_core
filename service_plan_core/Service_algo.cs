@@ -4,7 +4,7 @@ using System.Text;
 
 namespace service_plan_core
 {
-    class Service_algo
+    public static class Service_algo
     {
 
         public const int A = 0;
@@ -12,7 +12,7 @@ namespace service_plan_core
         public const int C = 2;
         public const int D = 3;
         public const int E = 4;
-        static public void make5x5(int[,] passeng_num)
+        static public void Make5x5(int[,] passeng_num)
         {
 
             for (int i = 0; i < 5; i++)
@@ -56,17 +56,21 @@ namespace service_plan_core
             Console.ReadLine();
         }
 
-        public static void train_a_b_c_d_e(int[,] demand, Train_obj train)
+        public static void Train_a_b_c_d_e(int[,] demand, Train_obj train,int[] service)
         {
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;
             int i, j, k;
+
             for (i = 0; i < 5; i++)
-            {
+            {   if (i==3){
+                    continue;
+                }
+
                 int demand_at_station = 0;
 
                 Console.WriteLine("Remainning Seat : " + train.remain_cap);
-                get_off_next_station = sum_get_off(actual_getoff, i);
+                get_off_next_station = sum_get_off(i);
                 Console.WriteLine("Number of getting off passenger at station " + i + " = " + get_off_next_station);
                 train.remain_cap += get_off_next_station;
                 Console.WriteLine("Remainning Seat after get off : " + train.remain_cap);
@@ -109,15 +113,15 @@ namespace service_plan_core
             }
 
 
-            int sum_get_off(int[,] getoff, int station)
-            {
-                int l;
-                int sum = 0;
-                for (l = 0; l < 5; l++)
-                {
-                    sum += getoff[l, station];
-                }
-                return sum;
+            int sum_get_off(int station)
+            {   if (station == 0) return 0; 
+                    int l;
+                    int sum = 0;
+                    for (l = 0; l < 5; l++)
+                    {
+                        sum += actual_getoff[l, station];
+                    }
+                    return sum;
             }
         }
 
