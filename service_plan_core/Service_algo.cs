@@ -19,7 +19,7 @@ namespace service_plan_core
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    passeng_num[i, j] = GetRandomNumber(1000, 5000);
+                    passeng_num[i, j] = GetRandomNumber(5, 10);
 
                     if (i == j)
                     {
@@ -28,8 +28,6 @@ namespace service_plan_core
                 }
 
             }
-
-
         }
         private static readonly Random getrandom = new Random();
         public static int GetRandomNumber(int min, int max)
@@ -62,10 +60,10 @@ namespace service_plan_core
             int get_off_next_station = 0;
             int i, j, k;
 
-            for (i = 0; i < 5; i++)
-            {   if (i==3){
+            for (i = 0; i < 5; i++) { 
+              if (service[i]==0){
                     continue;
-                }
+               }
 
                 int demand_at_station = 0;
 
@@ -76,7 +74,7 @@ namespace service_plan_core
                 Console.WriteLine("Remainning Seat after get off : " + train.remain_cap);
                 get_off_next_station = 0;
                 for (k = i + 1; k < 5; k++) // sum of demand at station i
-                {
+                { if (service[k] == 0) { continue; }
                     demand_at_station += demand[i, k];
                     Console.WriteLine("Demand at station " + i + " to station " + k + " is " + demand[i, k]);
                 }
@@ -86,6 +84,7 @@ namespace service_plan_core
                     train.remain_cap -= demand_at_station;
                     for (j = i + 1; j < 5; j++)
                     {
+                        if (service[j] == 0) { continue; }
                         actual_getoff[i, j] = demand[i, j];
                         demand[i, j] = 0;
                     }
@@ -96,6 +95,7 @@ namespace service_plan_core
                     demand_at_station = 0;
                     for (j = i + 1; j < 5; j++)
                     {
+                        if (service[j] == 0) { continue; }
                         Console.WriteLine("..............Debug train remainning seat  " + train.remain_cap);
                         Console.WriteLine("..............Debug Demand at station      " + demand_at_station);
                         Console.WriteLine("..............Debug ratio      " + ratio);
