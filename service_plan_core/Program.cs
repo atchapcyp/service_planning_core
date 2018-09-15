@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace service_plan_core
 {
-    class Program
+    public static class Program
     {
         static void Main(string[] args)
         {
@@ -61,17 +61,38 @@ namespace service_plan_core
         }
 
 
-        public static int[,] split5x5(int[,] fullmatrix, char direction)
-        { int[,] a= {{ 0, 10, 10, 10, 10 },
-            { 10, 0, 10, 10, 10 },
-            { 10, 10, 0, 10, 10 },
-            { 10, 10, 10, 0, 10 },
-            { 10, 10, 10, 10, 0 }};
+        public static int[,] split5x5_to(int[,] fullmatrix, char direction)
+        {
+            int[,] halfmatrix=new int[5,5] ;
 
-           // if direction
+            if (direction=='O'){
+                halfmatrix = fullmatrix;
+                for (int i = 0; i<5;i++){
+                    for (int j = 0; j < 5;j++){
+                        if (i>=j){
+                            halfmatrix[i,j] = 0;
+                        }
+                    }
+                }
+            }
+            if (direction=='I'){
+                for (int i = 0; i < 5;i++){
+                    for (int j = 0; j < 5;j++){
 
+                        if (i > j)
+                        {
+                            int k = 4 - i;
+                            int l = 4 - j;
+                            halfmatrix[k, l] = fullmatrix[i, j];
+                        }
+                        else{
+                            halfmatrix[j, i] = 0;
+                        }
+                    }
+                }
+            }
 
-            return a;
+            return halfmatrix;
         }
     }
 
