@@ -19,7 +19,7 @@ namespace service_plan_core
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    passeng_num[i, j] = GetRandomNumber(5, 10);
+                    passeng_num[i, j] = GetRandomNumber(500, 1000);
 
                     if (i == j)
                     {
@@ -54,15 +54,14 @@ namespace service_plan_core
             Console.ReadLine();
         }
 
-        public static void Train_a_b_c_d_e(int[,] demand, Train_obj train,int[] service
-            )
+        public static void Train_a_b_c_d_e(int[,] demand, Train_obj train,Service aService)
         {
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;
             int i, j, k;
 
             for (i = 0; i < 5; i++) { 
-              if (service[i]==0){
+                if (aService.stop_station[i]==0){
                     continue;
                }
 
@@ -75,7 +74,7 @@ namespace service_plan_core
                 Console.WriteLine("Remainning Seat after get off : " + train.remain_cap);
                 get_off_next_station = 0;
                 for (k = i + 1; k < 5; k++) // sum of demand at station i
-                { if (service[k] == 0) { continue; }
+                { if (aService.stop_station[k] == 0) { continue; }
                     demand_at_station += demand[i, k];
                     Console.WriteLine("Demand at station " + i + " to station " + k + " is " + demand[i, k]);
                 }
@@ -85,7 +84,7 @@ namespace service_plan_core
                     train.remain_cap -= demand_at_station;
                     for (j = i + 1; j < 5; j++)
                     {
-                        if (service[j] == 0) { continue; }
+                        if (aService.stop_station[j] == 0) { continue; }
                         actual_getoff[i, j] = demand[i, j];
                         demand[i, j] = 0;
                     }
@@ -96,7 +95,7 @@ namespace service_plan_core
                     demand_at_station = 0;
                     for (j = i + 1; j < 5; j++)
                     {
-                        if (service[j] == 0) { continue; }
+                        if (aService.stop_station[j] == 0) { continue; }
                         Console.WriteLine("..............Debug train remainning seat  " + train.remain_cap);
                         Console.WriteLine("..............Debug Demand at station      " + demand_at_station);
                         Console.WriteLine("..............Debug ratio      " + ratio);
@@ -105,8 +104,7 @@ namespace service_plan_core
                         actual_getoff[i, j] = fill_demand;
                         demand[i, j] -= fill_demand;
                         demand_at_station += fill_demand;
-                        // if  remain_cap> 0 .....
-                        // when demand is over cap
+
                     }
                     train.remain_cap -= demand_at_station;
                     Console.WriteLine("..............train remainning seat  " + train.remain_cap);

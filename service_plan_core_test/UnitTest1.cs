@@ -1,6 +1,8 @@
 using System;
 using Xunit;
 using service_plan_core;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace service_plan_core_test
 {
@@ -27,6 +29,7 @@ namespace service_plan_core_test
         {
             return x + y;
         }
+        
 
         [Fact]
         public void Test_split_matrix_to_inbound()
@@ -67,7 +70,7 @@ namespace service_plan_core_test
 
             int[,] actual = Program.split5x5_to(fullmatrix, 'O');
             int[,] expected = {
-                { 0, 01, 02, 03, 04 },
+             { 0, 01, 02, 03, 04 },
             { 0, 0, 12, 13, 14 },
             { 0, 0, 0, 23, 24 },
             { 0, 0, 0, 0, 34 },
@@ -88,7 +91,10 @@ namespace service_plan_core_test
             { 10, 10, 10, 10, 0 } };
 
             Train_obj train = new Train_obj(10);
-            int[] service = { 1, 0, 1, 0, 1 };
+            List<Service> forward = new List<Service>();
+            int[] service_3_station = { 1, 0, 1, 0, 1 };
+            Service testService = new Service("3_station_outbound", service_3_station);
+            forward.Add(testService);
 
             int[,] expected =
             {
@@ -97,7 +103,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 5 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -120,7 +126,10 @@ namespace service_plan_core_test
             { 10, 10, 10, 10, 0 } };
 
             Train_obj train = new Train_obj(30);
-            int[] service = { 1, 0, 1, 0, 1 };
+            List<Service> forward = new List<Service>();
+            int[] service_3_station = { 1, 0, 1, 0, 1 };
+            Service testService = new Service("All_station_outbound", service_3_station);
+            forward.Add(testService);
 
             int[,] expected =
             {
@@ -129,7 +138,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -151,7 +160,10 @@ namespace service_plan_core_test
             { 10, 10, 10, 10, 0 } };
 
             Train_obj train = new Train_obj(30);
-            int[] service = { 1, 1, 1, 0, 1 };
+            int[] service_4_station = { 1, 1, 1, 0, 1 };
+            List<Service> forward = new List<Service>();
+            Service testService = new Service("All_station_outbound", service_4_station);
+            forward.Add(testService);
 
             int[,] expected =
             {
@@ -160,7 +172,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -183,7 +195,10 @@ namespace service_plan_core_test
             { 10, 10, 10, 10, 0 } };
 
             Train_obj train = new Train_obj(40);
-            int[] service = { 1, 1, 1, 0, 1 };
+            int[] service_4_station = { 1, 1, 1, 0, 1 };
+            List<Service> forward = new List<Service>();
+            Service testService = new Service("All_station_outbound", service_4_station);
+            forward.Add(testService);
 
             int[,] expected =
             {
@@ -192,7 +207,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -216,7 +231,10 @@ namespace service_plan_core_test
             { 10, 10, 10, 10, 0 } };
 
             Train_obj train = new Train_obj(40);
-            int[] service = { 1, 1, 1, 1, 1 };
+            int[] service_all_station = { 1, 1, 1, 1, 1 };
+            List<Service> forward = new List<Service>();
+            Service testService = new Service("All_station_outbound", service_all_station);
+            forward.Add(testService);
 
             int[,] expected =
             {
@@ -225,7 +243,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 3, 3 },
                 { 10, 10, 10, 0, 0 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, service);
+            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
             for (int i=0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
