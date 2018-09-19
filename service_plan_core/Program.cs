@@ -17,20 +17,30 @@ namespace service_plan_core
             List<Service> forward = new List<Service>();
             List<int[]> backward = new List<int[]>();
             Train_obj train = new Train_obj(200);
-            int[] service1 = { 1, 1, 1, 1, 1 };
+            int[] service = { 1, 1, 1, 1, 1 };
             int[] service2 = { 1, 1, 1, 0, 1 };
             int[] service3 = { 1, 0, 0, 0, 1 };
 
 
 
-            Service aService = new Service("aaa",service1);
+            Service aService;
+           
+           /* while (true)
+            {
+                if (!remain()) break;
+                     service = createService(outbound_demand);
+                aService = new Service("aaa", service);
+                Service_algo.Train_a_b_c_d_e(outbound_demand, train, forward[0])
+            }
+            service = createService(outbound_demand);*/
+            aService = new Service("aaa",service);
             //add service to list
             forward.Add(aService);
             forward[0].show();
-            Service bService = new Service("4_station_outbound", service2);
-            forward.Add(bService);
-            Service cService = new Service("2_station_outbound", service3);
-            forward.Add(cService);
+            aService = new Service("4_station_outbound", service2);
+            forward.Add(aService);
+            aService = new Service("2_station_outbound", service3);
+            forward.Add(aService);
 
 
 
@@ -42,6 +52,8 @@ namespace service_plan_core
             Service_algo.Make5x5(passeng);
             outbound_demand = split5x5_to(passeng, 'O');
             inbound_demand = split5x5_to(passeng, 'I');
+            Service_algo.isDemandEmpty(outbound_demand);
+
             Console.WriteLine("This is all station demand . ");
             Service_algo.showarray(passeng);
             Console.WriteLine("------------------ ");

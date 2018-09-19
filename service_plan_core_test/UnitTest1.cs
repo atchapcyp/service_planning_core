@@ -29,6 +29,34 @@ namespace service_plan_core_test
         {
             return x + y;
         }
+
+        [Fact]
+        public void Test_isDemandEmpty_Must_be_False()
+        {
+            int[,] demand = {
+            { 0, 0, 0, 0, 0 },
+            { 0, 0,0, 0, 0 },
+            { 0, 0, 0, 1, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0,0, 0, 0 } };
+
+            bool actual = Service_algo.isDemandEmpty(demand);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void Test_isDemandEmpty_Must_be_True()
+        {
+            int[,] demand = {
+            { 0, 0, 0, 0, 0 },
+            { 0, 0,0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0 },
+            { 0, 0,0, 0, 0 } };
+
+            bool actual = Service_algo.isDemandEmpty(demand);
+            Assert.True(actual);
+        }
         
 
         [Fact]

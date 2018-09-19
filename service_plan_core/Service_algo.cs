@@ -47,7 +47,7 @@ namespace service_plan_core
             {
                 for (int j = 0; j < colLength; j++)
                 {
-                    Console.Write(string.Format("{0} ", passeng_num[i, j]));
+                    Console.Write(string.Format("{0}\t ", passeng_num[i, j]));
                 }
                 Console.Write(Environment.NewLine + Environment.NewLine);
             }
@@ -124,28 +124,16 @@ namespace service_plan_core
             }
         }
 
-        public static void train_x_y(int[,] demand, Train_obj train,int x,int y)
-        {  
-            if (x == y)
+        public static Boolean isDemandEmpty(int[,] demand)
+        {
+            foreach (int num in demand)
             {
-                // Service begin station must not the same as destination 
-            }
-            int get_off_y;
-            int actual_get_off_y;
-            Console.WriteLine("Remainning Seat : " + train.remain_cap);
-            get_off_y = demand[x, y];
-            if (train.remain_cap >= get_off_y)
-            {
-                train.remain_cap -= get_off_y;
-                actual_get_off_y = get_off_y;
-            }
-            else
-            {
-                actual_get_off_y = train.remain_cap;
-                train.remain_cap -= actual_get_off_y;
+                if (num != 0)
+                {
+                    return false;
                 }
-            Console.WriteLine("x_y service serve : " + actual_get_off_y);
-            demand[x, y] -= actual_get_off_y;
+            }
+            return true;
         }
     }
 
