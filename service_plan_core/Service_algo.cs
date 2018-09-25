@@ -126,15 +126,54 @@ namespace service_plan_core
 
         public static Boolean isDemandEmpty(int[,] demand)
         {
-            foreach (int num in demand)
+            foreach (int value in demand)
             {
-                if (num != 0)
+                if (value != 0)
                 {
                     return false;
                 }
             }
             return true;
         }
+
+        static public void fixedValue_5x5(int[,] passeng_num,int num)
+        {
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    passeng_num[i, j] = num;
+
+                    if (i == j)
+                    {
+                        passeng_num[i, j] = 0;
+                    }
+                }
+
+            }
+        }
+
+        static public int one_service_n_time(int[,] half_demand,Train_obj train, int[] service)
+        {
+            int counter = 0;
+            List<Service> forward = new List<Service>();
+            Service aService;
+            aService = new Service("All_station", service);
+            forward.Add(aService);
+            while (!Service_algo.isDemandEmpty(half_demand))
+            {
+                Console.WriteLine("----- ROUND " + ++counter + " ----- ");
+                Service_algo.showarray(half_demand);
+                Service_algo.Train_a_b_c_d_e(half_demand, train, forward[0]);
+                Console.WriteLine("This is remainning demand . ");
+                Service_algo.showarray(half_demand);
+                Console.WriteLine("------------------ ");
+                
+            }
+            return counter;
+        }
+
     }
 
 }

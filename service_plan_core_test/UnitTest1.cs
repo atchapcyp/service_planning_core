@@ -29,6 +29,7 @@ namespace service_plan_core_test
         {
             return x + y;
         }
+        
 
         [Fact]
         public void Test_isDemandEmpty_Must_be_False()

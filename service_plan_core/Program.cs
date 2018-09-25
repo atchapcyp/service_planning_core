@@ -8,15 +8,12 @@ namespace service_plan_core
     {
         static void Main(string[] args)
         {
-           
-           
-
             int[,] passeng = new int[5, 5];
             int[,] outbound_demand = new int[5, 5];
             int[,] inbound_demand = new int[5, 5];
             List<Service> forward = new List<Service>();
             List<int[]> backward = new List<int[]>();
-            Train_obj train = new Train_obj(200);
+            Train_obj train = new Train_obj(30);
             int[] service = { 1, 1, 1, 1, 1 };
             int[] service2 = { 1, 1, 1, 0, 1 };
             int[] service3 = { 1, 0, 0, 0, 1 };
@@ -49,32 +46,25 @@ namespace service_plan_core
             //backward.Add(opservice3);
 
 
-            Service_algo.Make5x5(passeng);
+            Service_algo.fixedValue_5x5(passeng, 28);
             outbound_demand = split5x5_to(passeng, 'O');
             inbound_demand = split5x5_to(passeng, 'I');
-            Service_algo.isDemandEmpty(outbound_demand);
-
             Console.WriteLine("This is all station demand . ");
             Service_algo.showarray(passeng);
-            Console.WriteLine("------------------ ");
-            Service_algo.showarray(outbound_demand);
-            Service_algo.Train_a_b_c_d_e(outbound_demand, train,forward[0]);
-            Console.WriteLine("This is remainning demand . ");
-            Service_algo.showarray(outbound_demand);
-            Console.WriteLine("------------------ ");
-            Service_algo.Train_a_b_c_d_e(outbound_demand, train, forward[2]);
-            Console.WriteLine("This is remainning demand . ");
-            Service_algo.showarray(outbound_demand);
 
-            Console.WriteLine("------------------ ");
+            /* while (!Service_algo.isDemandEmpty(outbound_demand))
+             {   
+                 Console.WriteLine("-----ROUND"+counter+"----- ");
+                 Service_algo.showarray(outbound_demand);
+                 Service_algo.Train_a_b_c_d_e(outbound_demand, train, forward[0]);
+                 Console.WriteLine("This is remainning demand . ");
+                 Service_algo.showarray(outbound_demand);
+                 Console.WriteLine("------------------ ");
+                 counter++;
+             } */
+            Service_algo.one_service_n_time(outbound_demand, train, service);
 
-            //Service_algo.showarray(inbound_demand);
-            //Service_algo.Train_a_b_c_d_e(inbound_demand, train, backward[1]);
-            Console.WriteLine("This is remainning demand . ");
-            Service_algo.showarray(inbound_demand);
-            Console.WriteLine("------------------ ");
-
-
+            Console.WriteLine("This is LAST demand . ");
 
             //unused
             //ArrayList myArryList = new ArrayList();
