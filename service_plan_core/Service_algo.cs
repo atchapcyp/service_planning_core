@@ -19,7 +19,7 @@ namespace service_plan_core
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    passeng_num[i, j] = GetRandomNumber(500, 1000);
+                    passeng_num[i, j] = GetRandomNumber(10, 100);
 
                     if (i == j)
                     {
@@ -59,8 +59,7 @@ namespace service_plan_core
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;
             int i, j, k;
-
-            for (i = 0; i < 5; i++) { 
+                        for (i = 0; i < 5; i++) { 
                 if (aService.stop_station[i]==0){
                     continue;
                }
@@ -106,8 +105,19 @@ namespace service_plan_core
                         demand_at_station += fill_demand;
 
                     }
+
                     train.remain_cap -= demand_at_station;
-                    Console.WriteLine("..............train remainning seat  " + train.remain_cap);
+                    Console.WriteLine("..............train remainning seat BEFORE " + train.remain_cap);
+                    int round_up_count = train.remain_cap;
+                    for (j = i+1; j <= round_up_count+i; j++)
+                    {
+                        Console.WriteLine("..............ROUND UP AT : " + i +j);
+                        actual_getoff[i, j]++;
+                        demand[i, j] -= 1;
+                        demand_at_station++;
+                        train.remain_cap--;
+                    }
+                      Console.WriteLine("..............train remainning seat AFTER  " + train.remain_cap);
                 }
             }
 

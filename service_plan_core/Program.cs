@@ -13,7 +13,7 @@ namespace service_plan_core
             int[,] inbound_demand = new int[5, 5];
             List<Service> forward = new List<Service>();
             List<int[]> backward = new List<int[]>();
-            Train_obj train = new Train_obj(30);
+            Train_obj train = new Train_obj(40);
             int[] service = { 1, 1, 1, 1, 1 };
             int[] service2 = { 1, 1, 1, 0, 1 };
             int[] service3 = { 1, 0, 0, 0, 1 };
@@ -46,8 +46,8 @@ namespace service_plan_core
             //backward.Add(opservice3);
 
 
-            Service_algo.fixedValue_5x5(passeng, 28);
-            outbound_demand = split5x5_to(passeng, 'O');
+            Service_algo.fixedValue_5x5(passeng,10);
+                       outbound_demand = split5x5_to(passeng, 'O');
             inbound_demand = split5x5_to(passeng, 'I');
             Console.WriteLine("This is all station demand . ");
             Service_algo.showarray(passeng);
