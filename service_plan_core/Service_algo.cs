@@ -134,6 +134,25 @@ namespace service_plan_core
             }
         }
 
+        public static Boolean isDemandEmpty_with_service(int[,] demand,int[] service)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (service[i] == 0)
+                    continue;
+                else
+                {
+                    for (int j = i + 1; j < 5; j++)
+                    {   if (service[j] == 0)
+                            continue;
+                        if (demand[i, j] != 0)
+                            return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         public static Boolean isDemandEmpty(int[,] demand)
         {
             foreach (int value in demand)
@@ -171,7 +190,7 @@ namespace service_plan_core
             Service aService;
             aService = new Service("All_station", service);
             forward.Add(aService);
-            while (!Service_algo.isDemandEmpty(half_demand))
+            while (!Service_algo.isDemandEmpty_with_service(half_demand,service))
             {
                 Console.WriteLine("----- ROUND " + ++counter + " ----- ");
                 Service_algo.showarray(half_demand);
