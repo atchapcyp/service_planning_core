@@ -10,6 +10,7 @@ namespace service_plan_core_test
     {
 
         //test using git
+        //test using git 2
         [Fact]
         public void PassingTest()
         {
