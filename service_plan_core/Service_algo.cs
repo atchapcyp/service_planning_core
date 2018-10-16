@@ -14,7 +14,7 @@ namespace service_plan_core
         public const int E = 4;
         static public void Make5x5(int[,] passeng_num)
         {
-
+            passeng_num = new int[5, 5];
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -28,6 +28,26 @@ namespace service_plan_core
                 }
 
             }
+        }
+
+
+        static public int[,] MakeNxN(int n)
+        {
+            int [,] passeng_num = new int[n, n];
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    passeng_num[i, j] = GetRandomNumber(10, 100);
+
+                    if (i == j)
+                    {
+                        passeng_num[i, j] = 0;
+                    }
+                }
+
+            }
+            return passeng_num;
         }
         private static readonly Random getrandom = new Random();
         public static int GetRandomNumber(int min, int max)

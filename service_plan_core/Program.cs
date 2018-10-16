@@ -8,19 +8,19 @@ namespace service_plan_core
     {
         static void Main(string[] args)
         {
-            int[,] passeng = new int[5, 5];
+            int[,] passeng ;
             int[,] outbound_demand = new int[5, 5];
             int[,] inbound_demand = new int[5, 5];
             List<Service> forward = new List<Service>();
             List<int[]> backward = new List<int[]>();
+            List<int[,]> demand_timeframe = new List<int[,]>();
             Train_obj train = new Train_obj(20);
             int[] service = { 1, 1, 1, 1, 1 };
             int[] service2 = { 1, 0, 1, 0, 1 };
             int[] service3 = { 1, 0, 0, 0, 1 };
 
-
-
             Service aService;
+            //int[, ] temp_demand;
            
            /* while (true)
             {
@@ -39,30 +39,24 @@ namespace service_plan_core
             aService = new Service("2_station_outbound", service3);
             forward.Add(aService);
 
+            //add demand to be time frame demand
+
+            TF_Demand passeng_demand = new TF_Demand(5);
+         
 
 
-            //backward.Add(opservice);
-            //backward.Add(opservice2);
-            //backward.Add(opservice3);
 
 
-            Service_algo.fixedValue_5x5(passeng,10);
-            outbound_demand = split5x5_to(passeng, 'O');
-            inbound_demand = split5x5_to(passeng, 'I');
+
+            outbound_demand = split5x5_to(passeng_demand.demand[0], 'O');
+            inbound_demand = split5x5_to(passeng_demand.demand[0], 'I');
             Console.WriteLine("This is all station demand . ");
-            Service_algo.showarray(passeng);
-
-            /* while (!Service_algo.isDemandEmpty(outbound_demand))
-             {   
-                 Console.WriteLine("-----ROUND"+counter+"----- ");
-                 Service_algo.showarray(outbound_demand);
-                 Service_algo.Train_a_b_c_d_e(outbound_demand, train, forward[0]);
-                 Console.WriteLine("This is remainning demand . ");
-                 Service_algo.showarray(outbound_demand);
-                 Console.WriteLine("------------------ ");
-                 counter++;
-             } */
-            Service_algo.one_service_n_time(outbound_demand, train, service2);
+            Service_algo.showarray(passeng_demand.demand[0]);
+            Console.WriteLine("This is Outbound station demand . ");
+            Service_algo.showarray(outbound_demand);
+            Console.WriteLine("This is inbound station demand . ");
+            Service_algo.showarray(inbound_demand);
+            Service_algo.one_service_n_time(outbound_demand, train, service);
 
             Console.WriteLine("This is LAST demand . ");
 
