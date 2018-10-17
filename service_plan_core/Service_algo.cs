@@ -12,6 +12,7 @@ namespace service_plan_core
         public const int C = 2;
         public const int D = 3;
         public const int E = 4;
+
         static public void Make5x5(int[,] passeng_num)
         {
             passeng_num = new int[5, 5];
@@ -214,6 +215,7 @@ namespace service_plan_core
             {
                 Console.WriteLine("----- ROUND " + ++counter + " ----- ");
                 Service_algo.showarray(half_demand);
+                Console.WriteLine("This service utilize : "+Service_algo.Cal_remain_seat(half_demand, train, service));                
                 Service_algo.Train_a_b_c_d_e(half_demand, train, forward[0]);
                 Console.WriteLine("This is remainning demand . ");
                 Service_algo.showarray(half_demand);
@@ -222,6 +224,105 @@ namespace service_plan_core
             }
             return counter;
         }
+
+        static public int Calculate_utilize(int[,] half_demand,Train_obj train,int[] service){
+            int[,] cal_demand = half_demand;
+            Service_algo.Cal_remain_seat(half_demand,train,service);
+
+            return 1;
+        }
+        //Cal_remain_seat returns utilization (sum of passenger*distance)
+        public static float Cal_remain_seat(int[,] demand, Train_obj train, int[] service)
+        {
+            int[,] actual_getoff = new int[5, 5];
+            int get_off_next_station = 0;
+            int i, j, k,p=0;
+            float train_util=0;
+            int[,] cal_demand = (int[,])demand.Clone();
+            for (i = 0; i < 5; i++)
+            {
+                if (service[i] == 0)
+                {   
+                    continue;
+                }
+
+                int demand_at_station = 0;
+
+
+                get_off_next_station = sum_get_off(i);
+
+                train.remain_cap += get_off_next_station;
+
+                get_off_next_station = 0;
+                for (k = i + 1; k < 5; k++) // sum of demand at station i
+                {
+                    if (service[k] == 0) { continue; }
+                    demand_at_station += cal_demand[i, k];
+
+                }
+
+                if (demand_at_station < train.remain_cap)
+                {
+                    train.remain_cap -= demand_at_station;
+                    for (j = i + 1; j < 5; j++)
+                    {
+                        if (service[j] == 0) { continue; }
+                        actual_getoff[i, j] = cal_demand[i, j];
+                        cal_demand[i, j] = 0;
+                    }
+                }
+                else
+                {
+                    double ratio = 1.0 * train.remain_cap / demand_at_station;
+                    demand_at_station = 0;
+                    for (j = i + 1; j < 5; j++)
+                    {
+                        if (service[j] == 0) { continue; }
+
+                        int fill_demand = (int)(cal_demand[i, j] * ratio);
+                     
+                        actual_getoff[i, j] = fill_demand;
+                        cal_demand[i, j] -= fill_demand;
+                        demand_at_station += fill_demand;
+
+                    }
+
+                    train.remain_cap -= demand_at_station;
+
+                    int round_up_count = train.remain_cap;
+                    for (j = i + 1; j <= round_up_count + i; j++)
+                    {
+                       
+                        actual_getoff[i, j]++;
+                        cal_demand[i, j] -= 1;
+                        demand_at_station++;
+                        train.remain_cap--;
+
+                    }
+
+                }
+                Console.WriteLine("CALCULATE UTIL--- Traincap : "+train.cap );
+                Console.WriteLine("CALCULATE UTIL--- Remaincap : " + train.remain_cap);
+                Console.WriteLine("CALCULATE UTIL--- StationDistance : " + Station.arr_distance[p,i]);
+                train_util += (train.cap - train.remain_cap) * Station.arr_distance[p, i];
+                p = i;
+            }
+
+
+            int sum_get_off(int station)
+            {
+                if (station == 0) return 0;
+                int l;
+                int sum = 0;
+                for (l = 0; l < 5; l++)
+                {
+                    sum += actual_getoff[l, station];
+                }
+                return sum;
+            }
+            return train_util;
+        }
+
 
     }
 

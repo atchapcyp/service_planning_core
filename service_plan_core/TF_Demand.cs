@@ -35,7 +35,7 @@ namespace service_plan_core
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        subdemand[i, j] = GetRandomNumber(10, 100);
+                        subdemand[i, j] = GetRandomNumber(100, 100);
 
                         if (i == j)
                         {
@@ -79,5 +79,7 @@ namespace service_plan_core
                 return getrandom.Next(min, max);
             }
         }
+
+
     }
 }

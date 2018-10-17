@@ -8,13 +8,13 @@ namespace service_plan_core
     {
         static void Main(string[] args)
         {
-            int[,] passeng ;
+         //   int[,] passeng ;
             int[,] outbound_demand = new int[5, 5];
             int[,] inbound_demand = new int[5, 5];
             List<Service> forward = new List<Service>();
             List<int[]> backward = new List<int[]>();
             List<int[,]> demand_timeframe = new List<int[,]>();
-            Train_obj train = new Train_obj(20);
+            Train_obj train = new Train_obj(200);
             int[] service = { 1, 1, 1, 1, 1 };
             int[] service2 = { 1, 0, 1, 0, 1 };
             int[] service3 = { 1, 0, 0, 0, 1 };
@@ -41,24 +41,19 @@ namespace service_plan_core
 
             //add demand to be time frame demand
 
-            TF_Demand passeng_demand = new TF_Demand(5);
-         
-
-
-
-
-
+            TF_Demand passeng_demand = new TF_Demand(120,5);
             outbound_demand = split5x5_to(passeng_demand.demand[0], 'O');
             inbound_demand = split5x5_to(passeng_demand.demand[0], 'I');
-            Console.WriteLine("This is all station demand . ");
-            Service_algo.showarray(passeng_demand.demand[0]);
-            Console.WriteLine("This is Outbound station demand . ");
-            Service_algo.showarray(outbound_demand);
-            Console.WriteLine("This is inbound station demand . ");
-            Service_algo.showarray(inbound_demand);
-            Service_algo.one_service_n_time(outbound_demand, train, service);
+            for (int i = 0; i < passeng_demand.demand.Count; i++)
+            {
 
+                Console.WriteLine("This is all station demand . at : " + i);
+                Service_algo.showarray(passeng_demand.demand[i]);
+            }
+            Service_algo.one_service_n_time(outbound_demand, train, service);
+      
             Console.WriteLine("This is LAST demand . ");
+
 
             //unused
             //ArrayList myArryList = new ArrayList();
