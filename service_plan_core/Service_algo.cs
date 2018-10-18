@@ -13,51 +13,6 @@ namespace service_plan_core
         public const int D = 3;
         public const int E = 4;
 
-        static public void Make5x5(int[,] passeng_num)
-        {
-            passeng_num = new int[5, 5];
-            for (int i = 0; i < 5; i++)
-            {
-                for (int j = 0; j < 5; j++)
-                {
-                    passeng_num[i, j] = GetRandomNumber(10, 100);
-
-                    if (i == j)
-                    {
-                        passeng_num[i, j] = 0;
-                    }
-                }
-
-            }
-        }
-
-
-        static public int[,] MakeNxN(int n)
-        {
-            int [,] passeng_num = new int[n, n];
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    passeng_num[i, j] = GetRandomNumber(10, 100);
-
-                    if (i == j)
-                    {
-                        passeng_num[i, j] = 0;
-                    }
-                }
-
-            }
-            return passeng_num;
-        }
-        private static readonly Random getrandom = new Random();
-        public static int GetRandomNumber(int min, int max)
-        {
-            lock (getrandom) // synchronize
-            {
-                return getrandom.Next(min, max);
-            }
-        }
         public static void showarray(int[,] passeng_num)
         {
             //show 5x5 array
@@ -227,12 +182,11 @@ namespace service_plan_core
 
         static public int Calculate_utilize(int[,] half_demand,Train_obj train,int[] service){
             int[,] cal_demand = half_demand;
-            Service_algo.Cal_remain_seat(half_demand,train,service);
-
+            Service_algo.Utilize_service(half_demand,train,service);
             return 1;
         }
         //Cal_remain_seat returns utilization (sum of passenger*distance)
-        public static float Cal_remain_seat(int[,] demand, Train_obj train, int[] service)
+        public static float Utilize_service(int[,] demand, Train_obj train, int[] service)
         {
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;

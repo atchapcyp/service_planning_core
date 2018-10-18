@@ -20,16 +20,7 @@ namespace service_plan_core
             int[] service3 = { 1, 0, 0, 0, 1 };
 
             Service aService;
-            //int[, ] temp_demand;
-           
-           /* while (true)
-            {
-                if (!remain()) break;
-                     service = createService(outbound_demand);
-                aService = new Service("aaa", service);
-                Service_algo.Train_a_b_c_d_e(outbound_demand, train, forward[0])
-            }
-            service = createService(outbound_demand);*/
+
             aService = new Service("aaa",service);
             //add service to list
             forward.Add(aService);
@@ -42,9 +33,9 @@ namespace service_plan_core
             //add demand to be time frame demand
 
             TF_Demand passeng_demand = new TF_Demand(120,5);
-            outbound_demand = split5x5_to(passeng_demand.demand[0], 'O');
-            inbound_demand = split5x5_to(passeng_demand.demand[0], 'I');
-            for (int i = 0; i < passeng_demand.demand.Count; i++)
+            outbound_demand = passeng_demand.getOutbound_demand(0);
+            inbound_demand = passeng_demand.getInbound_demand(0);
+            for (int i = 0; i < passeng_demand.getTF_amount(); i++)
             {
 
                 Console.WriteLine("This is all station demand . at : " + i);
@@ -60,41 +51,6 @@ namespace service_plan_core
             //myArryList.Add(service)
             //int[,] service1 =new int[2,5] { { 1, 1, 1, 1, 1 }, { 1, 0, 1, 0, 1 } };
 
-        }
-
-
-        public static int[,] split5x5_to(int[,] fullmatrix, char direction)
-        {
-            int[,] halfmatrix=new int[5,5] ;
-
-            if (direction=='O'){
-
-                for (int i = 0; i<5;i++){
-                    for (int j = 0; j < 5;j++){
-                        if (i<j){
-                            halfmatrix[i,j] = fullmatrix[i,j];
-                        }
-                    }
-                }
-            }
-            if (direction=='I'){
-                for (int i = 0; i < 5;i++){
-                    for (int j = 0; j < 5;j++){
-
-                        if (i > j)
-                        {
-                            int k = 4 - i;
-                            int l = 4 - j;
-                            halfmatrix[k, l] = fullmatrix[i, j];
-                        }
-                        else{
-                            halfmatrix[j, i] = 0;
-                        }
-                    }
-                }
-            }
-
-            return halfmatrix;
         }
     }
 

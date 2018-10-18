@@ -22,11 +22,12 @@ namespace service_plan_core
                 }
 
             }
-            demand.Add(subdemand);
+            this.demand.Add(subdemand);
         }
 
         public TF_Demand(int timeframe_interval, int dimension) // minute
         {
+            this.interval = timeframe_interval;
             int m = 24 * 60 / timeframe_interval;
             for (int k = 0; k < m; k++)
             {
@@ -44,7 +45,7 @@ namespace service_plan_core
                     }
 
                 }
-                demand.Add(subdemand);
+                this.demand.Add(subdemand);
             }
         }
 
@@ -67,8 +68,53 @@ namespace service_plan_core
                     }
 
                 }
-                demand.Add(subdemand);
+                this.demand.Add(subdemand);
             }
+        }
+
+        public int getTF_amount(){
+            return this.demand.Count;
+        }
+
+        public int[,] getOutbound_demand(int n){
+            int[,] fullmatrix = this.demand[n];
+            int[,] halfmatrix = new int[5, 5];
+
+                for (int i = 0; i < 5; i++)
+                {
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (i < j)
+                        {
+                            halfmatrix[i, j] = fullmatrix[i, j];
+                        }
+                    }
+                }
+            return halfmatrix;   
+    }
+        public int[,] getInbound_demand(int n)
+        {
+            int[,] fullmatrix = this.demand[n];
+            int[,] halfmatrix = new int[5, 5];
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+
+                    if (i > j)
+                    {
+                        int k = 4 - i;
+                        int l = 4 - j;
+                        halfmatrix[k, l] = fullmatrix[i, j];
+                    }
+                    else
+                    {
+                        halfmatrix[j, i] = 0;
+                    }
+                }
+            }
+            return halfmatrix;
         }
 
         private static readonly Random getrandom = new Random();

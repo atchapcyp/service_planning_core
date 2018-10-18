@@ -6,7 +6,7 @@ namespace service_plan_core
 {
     public class Train_obj
     {
-        public int cap = 150;
+        private int cap = 150;
         public int remain_cap = 150;
         public Train_obj()
         { }
