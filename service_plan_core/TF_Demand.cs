@@ -7,6 +7,7 @@ namespace service_plan_core
         
         public int interval;
         public List<int[,]> demand=new List<int[,]>();
+        public TF_Demand() { }
         public TF_Demand(int dimension){
             int[,] subdemand = new int[dimension,dimension]; 
             for (int i = 0; i < dimension; i++)

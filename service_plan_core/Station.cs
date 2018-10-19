@@ -14,5 +14,18 @@ namespace service_plan_core
         {
 
         }
+
+        public static int getDistance(int s,int d){
+            int distance=0;
+            if (s==d){
+                return distance;
+            }
+            if (s<d){
+                distance = arr_distance[0, d] - arr_distance[0, s];
+            }else if (s>d){
+                distance = arr_distance[4, d] - arr_distance[4, s];
+            }
+            return distance;
+        }
     }
 }

@@ -95,14 +95,16 @@ namespace service_plan_core_test
         [Fact]
         public void Test_split_matrix_to_inbound()
         {
-            int[,] fullmatrix = {
-            { 00, 01, 02, 03, 04 },
+            TF_Demand t = new TF_Demand(5);
+           
+            int[,] A ={{ 00, 01, 02, 03, 04 },
             { 10, 11, 12, 13, 14 },
             { 20, 21, 22, 23, 24 },
             { 30, 31, 32, 33, 34 },
             { 40, 41, 42, 43, 44 } };
+            t.demand.Insert(0, A);
 
-            int[,] actual = Program.split5x5_to(fullmatrix, 'I');
+            int[,] actual = t.getInbound_demand(0);
             int[,] expected = {
             { 0, 43, 42, 41, 40 },
             { 0, 0 , 32, 31, 30 },
@@ -122,14 +124,16 @@ namespace service_plan_core_test
         [Fact]
         public void Test_split_matrix_to_outbound()
         {
+            TF_Demand t = new TF_Demand(5);
             int[,] fullmatrix = {
             { 00, 01, 02, 03, 04 },
             { 10, 11, 12, 13, 14 },
             { 20, 21, 22, 23, 24 },
             { 30, 10, 32, 33, 34 },
             { 40, 41, 42, 43, 44 } };
+            t.demand.Insert(0, fullmatrix);
 
-            int[,] actual = Program.split5x5_to(fullmatrix, 'O');
+            int[,] actual = t.getOutbound_demand(0);
             int[,] expected = {
              { 0, 01, 02, 03, 04 },
             { 0, 0, 12, 13, 14 },

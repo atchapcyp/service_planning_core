@@ -170,7 +170,7 @@ namespace service_plan_core
             {
                 Console.WriteLine("----- ROUND " + ++counter + " ----- ");
                 Service_algo.showarray(half_demand);
-                Console.WriteLine("This service utilize : "+Service_algo.Cal_remain_seat(half_demand, train, service));                
+                Console.WriteLine("This service utilize : "+Service_algo.Utilize_service(half_demand, train, service));                
                 Service_algo.Train_a_b_c_d_e(half_demand, train, forward[0]);
                 Console.WriteLine("This is remainning demand . ");
                 Service_algo.showarray(half_demand);
