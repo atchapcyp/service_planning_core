@@ -32,6 +32,14 @@ namespace service_plan_core_test
         {
             return x + y;
         }
+
+        [Fact]
+        public void Test_getDistance(){
+            int actual = Station.getDistance(4, 0);
+            int expected = 110;
+            Assert.Equal(expected, actual);
+        }
+
         [Fact]
         public void Test_isDemandEmpty_With_Service_01111()
         {
