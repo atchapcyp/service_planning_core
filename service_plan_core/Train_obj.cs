@@ -15,5 +15,11 @@ namespace service_plan_core
             cap = c;
             remain_cap = cap;
         }
+        private void getOn(int amount){
+            this.remain_cap -= amount;
+        }
+        private void getOff(int amount){
+            this.remain_cap += amount;
+        }
     }
 }
