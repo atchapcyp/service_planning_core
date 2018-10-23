@@ -6,10 +6,12 @@ namespace service_plan_core
     {
         
         public int interval;
+        public int dimension;
         public List<int[,]> demand=new List<int[,]>();
         public TF_Demand() { }
         public TF_Demand(int dimension){
-            int[,] subdemand = new int[dimension,dimension]; 
+            int[,] subdemand = new int[dimension,dimension];
+            this.dimension = dimension;
             for (int i = 0; i < dimension; i++)
             {
                 for (int j = 0; j < dimension; j++)
@@ -28,6 +30,7 @@ namespace service_plan_core
 
         public TF_Demand(int timeframe_interval, int dimension) // minute
         {
+            this.dimension = dimension;
             this.interval = timeframe_interval;
             int m = 24 * 60 / timeframe_interval;
             for (int k = 0; k < m; k++)
@@ -52,6 +55,7 @@ namespace service_plan_core
 
         public TF_Demand(int day,int timeframe_interval, int dimension) // minute
         {
+            this.dimension = dimension;
             int m = 24 * 60 *day/ timeframe_interval;
             for (int k = 0; k < m; k++)
             {
@@ -75,6 +79,9 @@ namespace service_plan_core
 
         public int getTF_amount(){
             return this.demand.Count;
+        }
+        public int[,] getDemand(int i){
+            return this.demand[i];
         }
 
         public int[,] getOutbound_demand(int n){
@@ -116,6 +123,27 @@ namespace service_plan_core
                 }
             }
             return halfmatrix;
+        }
+
+        // dont forget to add unittest
+        public void commit_update_demand(int[,] latest_demand,int i){ 
+            if (demand.Count > i)
+            {
+                demand.RemoveAt(i);
+                demand.Insert(i, latest_demand);
+            }else{
+               // throw Exception;
+            }
+        }
+        public void sum_demand(int i){
+            // throw error when i>dimension
+            int[,] new_demand = new int[dimension, dimension];
+            for (int j = 0; j < dimension;j++){
+                for (int k = 0; k < dimension;k++){
+                     demand[i+1][j, k]+=demand[i][j,k];
+                }
+               
+            }
         }
 
         private static readonly Random getrandom = new Random();

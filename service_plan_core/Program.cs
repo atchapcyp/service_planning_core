@@ -13,7 +13,7 @@ namespace service_plan_core
             int[,] inbound_demand = new int[5, 5];
             List<Service> outbound_services = new List<Service>();
             List<int[]> backward = new List<int[]>();
-            List<int[,]> demand_timeframe = new List<int[,]>();
+            //List<int[,]> demand_timeframe = new List<int[,]>();
             Train_obj train = new Train_obj(200);
             int[] service = { 1, 1, 1, 1, 1 };
             int[] service2 = { 1, 0, 1, 0, 1 };

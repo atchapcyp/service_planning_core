@@ -32,7 +32,25 @@ namespace service_plan_core_test
         {
             return x + y;
         }
+        [Fact]
+        public void Test_getOff_TrainClass()
+        {
+            Train_obj train = new Train_obj(100);
+            train.getOn(50);
+            train.getOff(50);
+            int actual = train.remain_cap;
+            int expected = 100;
+            Assert.Equal(expected, actual);
+        }
 
+        [Fact]
+        public void Test_getOn_TrainClass(){
+            Train_obj train = new Train_obj(100);
+            train.getOn(50);
+            int actual = train.remain_cap;
+            int expected = 50;
+            Assert.Equal(expected, actual);
+        }
         [Fact]
         public void Test_getDistance(){
             int actual = Station.getDistance(4, 0);
