@@ -166,23 +166,41 @@ namespace service_plan_core
             Service aService;
             aService = new Service("All_station", service);
             forward.Add(aService);
-            while (!Service_algo.isDemandEmpty_with_service(half_demand,service))
+            while (!isDemandEmpty_with_service(half_demand,service))
             {
                 Console.WriteLine("----- ROUND " + ++counter + " ----- ");
-                Service_algo.showarray(half_demand);
-                Console.WriteLine("This service utilize : "+Service_algo.Utilize_service(half_demand, train, service));                
-                Service_algo.Train_a_b_c_d_e(half_demand, train, forward[0]);
+                showarray(half_demand);
+                Console.WriteLine("This service utilize : "+Utilize_service(half_demand, train, service));
+                Train_a_b_c_d_e(half_demand, train, forward[0]);
                 Console.WriteLine("This is remainning demand . ");
-                Service_algo.showarray(half_demand);
+                showarray(half_demand);
                 Console.WriteLine("------------------ ");
                 
             }
             return counter;
         }
 
+        public static float max_utilize_service(int train_cap,int[] service){
+
+            int source=0,destination=0;
+            for (int i = 0; i < service.Length-1;i++){
+                if(service[i]==1){
+                    source = i;
+                    break;
+                }
+            }
+            for (int i = service.Length-1; i > 0;i--){
+                if(service[i]==1){
+                    destination = i;
+                    break;
+                }
+            }
+            return train_cap*Station.getDistance(source,destination);
+        }
+
         static public int Calculate_utilize(int[,] half_demand,Train_obj train,int[] service){
             int[,] cal_demand = half_demand;
-            Service_algo.Utilize_service(half_demand,train,service);
+            Utilize_service(half_demand,train,service);
             return 1;
         }
         //Cal_remain_seat returns utilization (sum of passenger*distance)
@@ -265,7 +283,7 @@ namespace service_plan_core
                 Console.WriteLine("CALCULATE UTIL--- StationDistance : " + Station.arr_distance[i, next_station_index]);
                 train_util += (train.cap - train.remain_cap) * Station.arr_distance[i, next_station_index];
                 Console.WriteLine("Train_util : " + train_util);
-                //p = i;
+
             }
 
 
