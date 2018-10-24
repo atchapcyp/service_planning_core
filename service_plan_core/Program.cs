@@ -41,7 +41,7 @@ namespace service_plan_core
                 Console.WriteLine("This is all station demand . at : " + i);
                 Service_algo.showarray(passeng_demand.demand[i]);
             }
-            Service_algo.one_service_n_time(outbound_demand, train, service);
+            Service_algo.one_service_n_time(outbound_demand, train, service2);
       
             Console.WriteLine("This is LAST demand . ");
 

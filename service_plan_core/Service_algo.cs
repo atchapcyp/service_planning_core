@@ -190,7 +190,7 @@ namespace service_plan_core
         {
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;
-            int i, j, k,p=0;
+            int i, j, k,next_station_index=0;
             float train_util=0;
             int[,] cal_demand = (int[,])demand.Clone();
             for (i = 0; i < 5; i++)
@@ -198,6 +198,11 @@ namespace service_plan_core
                 if (service[i] == 0)
                 {   
                     continue;
+                }
+                for (int a = 4; a > i;a--){
+                    if (service[a]==1){
+                        next_station_index = a;
+                    }
                 }
 
                 int demand_at_station = 0;
@@ -257,9 +262,10 @@ namespace service_plan_core
                 }
                 Console.WriteLine("CALCULATE UTIL--- Traincap : "+train.cap );
                 Console.WriteLine("CALCULATE UTIL--- Remaincap : " + train.remain_cap);
-                Console.WriteLine("CALCULATE UTIL--- StationDistance : " + Station.arr_distance[p,i]);
-                train_util += (train.cap - train.remain_cap) * Station.arr_distance[p, i];
-                p = i;
+                Console.WriteLine("CALCULATE UTIL--- StationDistance : " + Station.arr_distance[i, next_station_index]);
+                train_util += (train.cap - train.remain_cap) * Station.arr_distance[i, next_station_index];
+                Console.WriteLine("Train_util : " + train_util);
+                //p = i;
             }
 
 
