@@ -110,16 +110,16 @@ namespace service_plan_core
             }
         }
 
-        public static Boolean isDemandEmpty_with_service(int[,] demand,int[] service)
+        public static Boolean isDemandEmpty_with_service(int[,] demand,Service services)
         {
             for (int i = 0; i < 5; i++)
             {
-                if (service[i] == 0)
+                if (services.stop_station[i] == 0)
                     continue;
                 else
                 {
                     for (int j = i + 1; j < 5; j++)
-                    {   if (service[j] == 0)
+                    {   if (services.stop_station[j] == 0)
                             continue;
                         if (demand[i, j] != 0)
                             return false;
@@ -159,19 +159,24 @@ namespace service_plan_core
             }
         }
 
-        static public int one_service_n_time(int[,] half_demand,Train_obj train, int[] service)
+        static public int one_service_n_time(int[,] half_demand,Train_obj train,List<Service> services)
         {
             int counter = 0;
-            List<Service> forward = new List<Service>();
-            Service aService;
-            aService = new Service("All_station", service);
-            forward.Add(aService);
-            while (!isDemandEmpty_with_service(half_demand,service))
+            int i = 2;
+            services[i].show();
+ 
+            while (!isDemandEmpty_with_service(half_demand,services[i]))
             {
                 Console.WriteLine("----- ROUND " + ++counter + " ----- ");
                 showarray(half_demand);
-                Console.WriteLine("This service utilize : "+Utilize_service(half_demand, train, service));
-                Train_a_b_c_d_e(half_demand, train, forward[0]);
+                float service_util = Utilize_service(half_demand, train, services[i]);
+                float max_util = max_utilize_of_service(train.cap, services[i]);
+                float util_percent = service_util / max_util * 100;
+                Console.WriteLine("This service utilize : "+service_util);
+                Console.WriteLine("MAX service utilize : " + max_util);
+                Console.WriteLine("Percent service utilize : " + util_percent);
+
+                Train_a_b_c_d_e(half_demand, train, services[i]);
                 Console.WriteLine("This is remainning demand . ");
                 showarray(half_demand);
                 Console.WriteLine("------------------ ");
@@ -180,17 +185,37 @@ namespace service_plan_core
             return counter;
         }
 
-        public static float max_utilize_service(int train_cap,int[] service){
+        public static float cal_utilize_percent(int[,] demand,Train_obj train,Service service){
+            float a = Utilize_service(demand, train, service);
+            float b = max_utilize_of_service(train.cap, service);
+            return a / b * 100;
+        }
+
+        public static int cal_all_service_util(int[,] demand,Train_obj train,List<Service> services){
+            int most_util_index=-1;
+            float most_percent=-1;
+            for (int i = 0; i < services.Count;i++){
+                float temp;
+                temp = cal_utilize_percent(demand, train, services[i]);
+                if (temp > most_percent) {
+                    most_percent = temp;
+                    most_util_index = i;
+                }
+            }
+            return most_util_index;
+        }
+
+        public static float max_utilize_of_service(int train_cap,Service service){
 
             int source=0,destination=0;
-            for (int i = 0; i < service.Length-1;i++){
-                if(service[i]==1){
+            for (int i = 0; i < service.getLength();i++){
+                if(service.stop_station[i]==1){
                     source = i;
                     break;
                 }
             }
-            for (int i = service.Length-1; i > 0;i--){
-                if(service[i]==1){
+            for (int i = service.getLength()-1; i > 0;i--){
+                if(service.stop_station[i]==1){
                     destination = i;
                     break;
                 }
@@ -198,13 +223,8 @@ namespace service_plan_core
             return train_cap*Station.getDistance(source,destination);
         }
 
-        static public int Calculate_utilize(int[,] half_demand,Train_obj train,int[] service){
-            int[,] cal_demand = half_demand;
-            Utilize_service(half_demand,train,service);
-            return 1;
-        }
         //Cal_remain_seat returns utilization (sum of passenger*distance)
-        public static float Utilize_service(int[,] demand, Train_obj train, int[] service)
+        public static float Utilize_service(int[,] demand, Train_obj train, Service service)
         {
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;
@@ -213,18 +233,17 @@ namespace service_plan_core
             int[,] cal_demand = (int[,])demand.Clone();
             for (i = 0; i < 5; i++)
             {
-                if (service[i] == 0)
+                if (service.stop_station[i] == 0)
                 {   
                     continue;
                 }
                 for (int a = 4; a > i;a--){
-                    if (service[a]==1){
+                    if (service.stop_station[a]==1){
                         next_station_index = a;
                     }
                 }
 
                 int demand_at_station = 0;
-
 
                 get_off_next_station = sum_get_off(i);
 
@@ -233,7 +252,7 @@ namespace service_plan_core
                 get_off_next_station = 0;
                 for (k = i + 1; k < 5; k++) // sum of demand at station i
                 {
-                    if (service[k] == 0) { continue; }
+                    if (service.stop_station[k] == 0) { continue; }
                     demand_at_station += cal_demand[i, k];
 
                 }
@@ -243,7 +262,7 @@ namespace service_plan_core
                     train.remain_cap -= demand_at_station;
                     for (j = i + 1; j < 5; j++)
                     {
-                        if (service[j] == 0) { continue; }
+                        if (service.stop_station[j] == 0) { continue; }
                         actual_getoff[i, j] = cal_demand[i, j];
                         cal_demand[i, j] = 0;
                     }
@@ -254,7 +273,7 @@ namespace service_plan_core
                     demand_at_station = 0;
                     for (j = i + 1; j < 5; j++)
                     {
-                        if (service[j] == 0) { continue; }
+                        if (service.stop_station[j] == 0) { continue; }
 
                         int fill_demand = (int)(cal_demand[i, j] * ratio);
                      
@@ -269,7 +288,7 @@ namespace service_plan_core
                     int round_up_count = train.remain_cap;
                     for (j = i + 1; j <= round_up_count + i; j++)
                     {
-                       
+         
                         actual_getoff[i, j]++;
                         cal_demand[i, j] -= 1;
                         demand_at_station++;
@@ -286,7 +305,6 @@ namespace service_plan_core
 
             }
 
-
             int sum_get_off(int station)
             {
                 if (station == 0) return 0;
@@ -300,8 +318,5 @@ namespace service_plan_core
             }
             return train_util;
         }
-
-
     }
-
 }

@@ -36,7 +36,7 @@ namespace service_plan_core_test
         public void Test_maxUtilze(){
             Train_obj train = new Train_obj(100);
             int[] service = { 1, 1, 1, 1, 0 };
-            float actual = Service_algo.max_utilize_service(train.cap, service);
+            float actual = Service_algo.max_utilize_of_service(train.cap, service);
             float expected = 8500;
             Assert.Equal(expected, actual);
         }

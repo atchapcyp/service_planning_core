@@ -6,10 +6,12 @@ namespace service_plan_core
     {
         public string service_id;
         public int[] stop_station;
+
         public Service(string id,int[] stop_station)
         {
             service_id = id;
-             this.stop_station= stop_station ;
+            this.stop_station= stop_station ;
+
         }
         public void show(){
             Console.WriteLine(this.service_id);
@@ -19,5 +21,11 @@ namespace service_plan_core
          
             Console.WriteLine();
         }
+
+        public int getLength(){
+            return this.stop_station.Length;
+        }
+
+       
     }
 }

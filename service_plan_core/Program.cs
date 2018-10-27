@@ -32,25 +32,17 @@ namespace service_plan_core
 
             //add demand to be time frame demand
 
-            TF_Demand passeng_demand = new TF_Demand(120,5);
+            TF_Demand passeng_demand = new TF_Demand(720,5);
             outbound_demand = passeng_demand.getOutbound_demand(0);
             inbound_demand = passeng_demand.getInbound_demand(0);
             for (int i = 0; i < passeng_demand.getTF_amount(); i++)
             {
-
                 Console.WriteLine("This is all station demand . at : " + i);
                 Service_algo.showarray(passeng_demand.demand[i]);
             }
-            Service_algo.one_service_n_time(outbound_demand, train, service2);
-      
+            Service_algo.one_service_n_time(outbound_demand, train,outbound_services);
+    
             Console.WriteLine("This is LAST demand . ");
-
-
-            //unused
-            //ArrayList myArryList = new ArrayList();
-            //myArryList.Add(service)
-            //int[,] service1 =new int[2,5] { { 1, 1, 1, 1, 1 }, { 1, 0, 1, 0, 1 } };
-
         }
     }
 
