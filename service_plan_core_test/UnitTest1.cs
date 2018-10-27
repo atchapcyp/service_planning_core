@@ -35,8 +35,10 @@ namespace service_plan_core_test
         [Fact]
         public void Test_maxUtilze(){
             Train_obj train = new Train_obj(100);
+
             int[] service = { 1, 1, 1, 1, 0 };
-            float actual = Service_algo.max_utilize_of_service(train.cap, service);
+            Service services = new Service("test",service);
+            float actual = Service_algo.max_utilize_of_service(train.cap, services);
             float expected = 8500;
             Assert.Equal(expected, actual);
         }
@@ -71,6 +73,7 @@ namespace service_plan_core_test
         public void Test_isDemandEmpty_With_Service_01111()
         {
             int[] service = { 0, 1, 1, 1, 1 };
+            Service A = new Service("test", service);
             int[,] demand = {
             { 0, 10, 10,10, 10 },
             { 0, 0,0, 0, 0 },
@@ -78,7 +81,7 @@ namespace service_plan_core_test
             { 0, 0, 0, 0, 0 },
             { 0, 0,0, 0, 0 } };
 
-            bool actual = Service_algo.isDemandEmpty_with_service(demand,service);
+            bool actual = Service_algo.isDemandEmpty_with_service(demand,A);
             Assert.True(actual);
         }
 
@@ -86,6 +89,7 @@ namespace service_plan_core_test
         public void Test_isDemandEmpty_With_Service_10101()
         {
             int[] service = { 1, 0, 1, 0, 1 };
+            Service A = new Service("test", service);
             int[,] demand = {
             { 0, 10, 0, 10, 0 },
             { 0, 0, 10, 10, 10 },
@@ -93,7 +97,7 @@ namespace service_plan_core_test
             { 0, 0, 0, 0, 10 },
             { 0, 0,0, 0, 0 } };
 
-            bool actual = Service_algo.isDemandEmpty_with_service(demand,service);
+            bool actual = Service_algo.isDemandEmpty_with_service(demand,A);
             Assert.True(actual);
         }
 
