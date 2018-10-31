@@ -13,11 +13,11 @@ namespace service_plan_core
             int[,] inbound_demand = new int[5, 5];
             List<Service> outbound_services = new List<Service>();
             List<int[]> backward = new List<int[]>();
-            //List<int[,]> demand_timeframe = new List<int[,]>();
             Train_obj train = new Train_obj(200);
             int[] service = { 1, 1, 1, 1, 1 };
-            int[] service2 = { 0, 0, 1, 0, 1 };
+            int[] service2 = { 1, 0, 1, 1, 1 };
             int[] service3 = { 1, 0, 0, 0, 1 };
+            int[] service4 = { 0, 1, 1, 1, 1 };
 
             Service aService;
 
@@ -29,6 +29,9 @@ namespace service_plan_core
             outbound_services.Add(aService);
             aService = new Service("2_station_outbound", service3);
             outbound_services.Add(aService);
+            aService = new Service("4_station_outbound_start_at_1", service4);
+            outbound_services.Add(aService);
+
 
             //add demand to be time frame demand
 

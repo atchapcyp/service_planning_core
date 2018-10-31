@@ -6,6 +6,7 @@ namespace service_plan_core
     {
         public string service_id;
         public int[] stop_station;
+        public int service_quantity;
 
         public Service(string id,int[] stop_station)
         {

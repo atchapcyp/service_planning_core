@@ -33,6 +33,32 @@ namespace service_plan_core_test
             return x + y;
         }
         [Fact]
+        public void Test_cal_service_util_must_reply_index(){
+            Train_obj train = new Train_obj(200);
+            TF_Demand demand = new TF_Demand(1440,5);
+            int[,] outbound_demand = new int[5, 5];
+            List<Service> outbound_services = new List<Service>();
+            int[] service = { 1, 0, 1, 1, 1 };
+            int[] service2 = { 0, 0, 1, 0, 1 };
+            int[] service3 = { 1, 1, 1, 1, 1 };
+            int[] service4 = { 0, 1, 1, 1, 1 };
+            Service aService;
+            aService = new Service("aaa", service);
+            outbound_services.Add(aService);
+            aService = new Service("3_station_outbound", service2);
+            outbound_services.Add(aService);
+            aService = new Service("2_station_outbound", service3);
+            outbound_services.Add(aService);
+            aService = new Service("4_station_outbound_start_at_1", service4);
+            outbound_services.Add(aService);
+            outbound_demand = demand.getOutbound_demand(0);
+            int actual=Service_algo.cal_all_service_util(outbound_demand,train,outbound_services);
+            int expected = 0;
+            Assert.Equal(expected, actual);
+
+        }
+
+        [Fact]
         public void Test_maxUtilze(){
             Train_obj train = new Train_obj(100);
 
