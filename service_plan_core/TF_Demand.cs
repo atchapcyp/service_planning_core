@@ -40,7 +40,7 @@ namespace service_plan_core
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        subdemand[i, j] = GetRandomNumber(100, 100);
+                        subdemand[i, j] = GetRandomNumber(50, 200);
 
                         if (i == j)
                         {

@@ -165,12 +165,12 @@ namespace service_plan_core
 
             }
         }
-        static public void all_service_n_time(int[,] half_demand,Train_obj train,List<Service> services){
+        static public void all_service_n_time(int[,] outbound_demand,Train_obj train,List<Service> services){
             int indexOfMaxUtilize;
             float most_utilize=0;
-            while (!isDemandEmpty(half_demand)){
+            while (!isDemandEmpty(outbound_demand)){
                 for (int i = 0; i < services.Count;i++){
-                    float service_util = Utilize_service(half_demand, train, services[i]);
+                    float service_util = Utilize_service(outbound_demand, train, services[i]);
                     float max_util = max_utilize_of_service(train.cap, services[i]);
                     float util_percent = service_util / max_util * 100;
                     if (util_percent > most_utilize){
@@ -181,32 +181,52 @@ namespace service_plan_core
             }
         }
 
-        static public int one_service_n_time(int[,] half_demand,Train_obj train,List<Service> services)
+        static public int index_of_most_utilize_service(int[,] outbound_demand,Train_obj train,List<Service> services)
         {
             int counter = 0;
-            int i = 1;
-            services[i].show();
- 
-            while (!isDemandEmpty_with_service(half_demand,services[i]))
+            int index_of_max_util;
+            float util_percent=0;
+            for (int i = 0; i < services.Count; i++)
             {
-                Console.WriteLine("----- ROUND " + ++counter + " ----- ");
-                showarray(half_demand);
-                float service_util = Utilize_service(half_demand, train, services[i]);
-                Console.WriteLine("remain  cap : "+train.remain_cap);
-                float max_util = max_utilize_of_service(train.cap, services[i]);
-                float util_percent = service_util / max_util * 100;
-                Console.WriteLine("This service utilize : "+service_util);
-                Console.WriteLine("MAX service utilize : " + max_util);
-                Console.WriteLine("Percent service utilize : " + util_percent);
-
-                Train_a_b_c_d_e(half_demand, train, services[i]);
-                Console.WriteLine("This is remainning demand . ");
-                showarray(half_demand);
-                Console.WriteLine("------------------ ");
-                
+                services[i].show();
+                    Console.WriteLine("----- ROUND " + ++counter + " ----- ");
+                    showarray(outbound_demand);
+                    float service_util = Utilize_service(outbound_demand, train, services[i]);
+                    float max_util = max_utilize_of_service(train.cap, services[i]);
+                    float new_util_percent = service_util / max_util * 100;
+                    Console.WriteLine("This service utilize : " + service_util);
+                    Console.WriteLine("MAX service utilize : " + max_util);
+                    Console.WriteLine("Percent service utilize : " + new_util_percent);
+                if (Math.Abs(100-new_util_percent)<=float.Epsilon) {//float compare
+                    Console.WriteLine("FLOAT CHECK EQUAL 100");
+                    return i; 
+                }
+                if(new_util_percent>util_percent){
+                    util_percent = new_util_percent;
+                    index_of_max_util = i;
+                }
             }
-            return counter;
+
+            return index_of_max_util;
         }
+
+        static public void actual_run(int[,] outbound_demand,Train_obj train,Service service){
+            Console.WriteLine("ACTUAL_RUN . ");
+            Console.WriteLine(service.service_id);
+            Train_a_b_c_d_e(outbound_demand, train, service);
+            Console.WriteLine("This is remainning demand . ");
+            showarray(outbound_demand);
+            Console.WriteLine("------------------ ");
+        }
+
+        static public void orchestrator_of_service(int[,] outbound_demand,Train_obj train,List<Service> services){
+            while (!isDemandEmpty(outbound_demand)) {
+               int s= index_of_most_utilize_service(outbound_demand, train, services);
+                actual_run(outbound_demand, train, services[s]);
+            }
+            Console.WriteLine("----END--OF--orchestrate-------- ");
+        }
+
 
         public static float cal_utilize_percent(int[,] demand,Train_obj train,Service service){
             float a = Utilize_service(demand, train, service);

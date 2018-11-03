@@ -18,6 +18,9 @@ namespace service_plan_core
             int[] service2 = { 1, 0, 1, 1, 1 };
             int[] service3 = { 1, 0, 0, 0, 1 };
             int[] service4 = { 0, 1, 1, 1, 1 };
+            int[] service5 = { 1, 0, 0, 1, 1 };
+            int[] service6 = { 1, 0, 1, 0, 1 };
+            int[] service7 = { 0, 1, 1, 0, 1 };
 
             Service aService;
 
@@ -31,6 +34,13 @@ namespace service_plan_core
             outbound_services.Add(aService);
             aService = new Service("4_station_outbound_start_at_1", service4);
             outbound_services.Add(aService);
+            aService = new Service("3_station_outbound 0 1 0", service5);
+            outbound_services.Add(aService);
+            aService = new Service("3_station_outbound_start_at_1", service6);
+            outbound_services.Add(aService);
+            aService = new Service("3_station_outbound", service7);
+            outbound_services.Add(aService);
+           
 
 
             //add demand to be time frame demand
@@ -43,7 +53,7 @@ namespace service_plan_core
                 Console.WriteLine("This is all station demand . at : " + i);
                 Service_algo.showarray(passeng_demand.demand[i]);
             }
-            Service_algo.one_service_n_time(outbound_demand, train,outbound_services);
+            Service_algo.orchestrator_of_service(outbound_demand, train, outbound_services);
     
             Console.WriteLine("This is LAST demand . ");
         }
