@@ -184,7 +184,7 @@ namespace service_plan_core
         static public int index_of_most_utilize_service(int[,] outbound_demand,Train_obj train,List<Service> services)
         {
             int counter = 0;
-            int index_of_max_util;
+            int index_of_max_util=0;
             float util_percent=0;
             for (int i = 0; i < services.Count; i++)
             {

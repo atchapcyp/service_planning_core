@@ -8,7 +8,8 @@ namespace service_plan_core
     {
         static void Main(string[] args)
         {
-         //   int[,] passeng ;
+            //   int[,] passeng ;
+            LogWriter log = new LogWriter("xxx");
             int[,] outbound_demand = new int[5, 5];
             int[,] inbound_demand = new int[5, 5];
             List<Service> outbound_services = new List<Service>();
