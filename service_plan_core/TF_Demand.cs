@@ -8,24 +8,28 @@ namespace service_plan_core
         public int interval;
         public int dimension;
         public List<int[,]> demand=new List<int[,]>();
+        public List<int[,]> unserve_demand = new List<int[,]>(); 
         public TF_Demand() { }
         public TF_Demand(int dimension){
             int[,] subdemand = new int[dimension,dimension];
+            int[,] unserve_subdemand = new int[dimension, dimension];
             this.dimension = dimension;
             for (int i = 0; i < dimension; i++)
             {
                 for (int j = 0; j < dimension; j++)
                 {
                     subdemand[i, j] = GetRandomNumber(10, 100);
-
+                    unserve_subdemand[i, j] = 0;
                     if (i == j)
                     {
                         subdemand[i, j] = 0;
+                        unserve_subdemand[i, j] = 0;
                     }
                 }
 
             }
             this.demand.Add(subdemand);
+            this.unserve_demand.Add(unserve_subdemand);
         }
 
         public TF_Demand(int timeframe_interval, int dimension) // minute
@@ -36,20 +40,23 @@ namespace service_plan_core
             for (int k = 0; k < m; k++)
             {
                 int[,] subdemand = new int[dimension, dimension];
+                int[,] unserve_subdemand = new int[dimension, dimension];
                 for (int i = 0; i < dimension; i++)
                 {
                     for (int j = 0; j < dimension; j++)
                     {
                         subdemand[i, j] = GetRandomNumber(50, 200);
-
+                        unserve_subdemand[i, j] = 0;
                         if (i == j)
                         {
                             subdemand[i, j] = 0;
+                            unserve_subdemand[i, j] = 0;
                         }
                     }
 
                 }
                 this.demand.Add(subdemand);
+                this.unserve_demand.Add(unserve_subdemand);
             }
         }
 
@@ -60,21 +67,27 @@ namespace service_plan_core
             for (int k = 0; k < m; k++)
             {
                 int[,] subdemand = new int[dimension, dimension];
+                int[,] unserve_subdemand = new int[dimension, dimension];
                 for (int i = 0; i < dimension; i++)
                 {
                     for (int j = 0; j < dimension; j++)
                     {
                         subdemand[i, j] = GetRandomNumber(10, 100);
-
+                        unserve_subdemand[i, j] = 0;
                         if (i == j)
                         {
                             subdemand[i, j] = 0;
+                            unserve_subdemand[i, j] = 0;
                         }
                     }
 
                 }
                 this.demand.Add(subdemand);
+                this.unserve_demand.Add(unserve_subdemand);
             }
+        }
+        public void set_unserve(int[,] unserve,int index){
+            Array.Copy(unserve, this.unserve_demand[index],unserve.Length);
         }
 
         public int getTF_amount(){
@@ -82,6 +95,9 @@ namespace service_plan_core
         }
         public int[,] getDemand(int i){
             return this.demand[i];
+        }
+        public int[,] getUnserveDemand(int i){
+            return this.unserve_demand[i];
         }
 
         public int[,] getOutbound_demand(int n){
@@ -135,14 +151,12 @@ namespace service_plan_core
                // throw Exception;
             }
         }
-        public void sum_demand(int i){
+        public void sum_to_unserve_demand(int i){
             // throw error when i>dimension
-            int[,] new_demand = new int[dimension, dimension];
-            for (int j = 0; j < dimension;j++){
-                for (int k = 0; k < dimension;k++){
-                     demand[i+1][j, k]+=demand[i][j,k];
+            for (int j = 0; j < this.dimension;j++){
+                for (int k = 0; k < this.dimension;k++){
+                    demand[i][j, k]+=unserve_demand[i-1][j,k];
                 }
-               
             }
         }
 
@@ -155,6 +169,32 @@ namespace service_plan_core
             }
         }
 
+        public TF_Demand(int timeframe_interval, int dimension,string fortest) // minute
+        {
+            this.dimension = dimension;
+            this.interval = timeframe_interval;
+            int m = 24 * 60 / timeframe_interval;
+            for (int k = 0; k < m; k++)
+            {
+                int[,] subdemand = new int[dimension, dimension];
+                int[,] unserve_subdemand = new int[dimension, dimension];
+                for (int i = 0; i < dimension; i++)
+                {
+                    for (int j = 0; j < dimension; j++)
+                    {
+                        subdemand[i, j] = GetRandomNumber(100, 100);
+                        unserve_subdemand[i, j] = 50;
+                        if (i == j)
+                        {
+                            subdemand[i, j] = 0;
+                            unserve_subdemand[i, j] = 25;
+                        }
+                    }
 
+                }
+                this.demand.Add(subdemand);
+                this.unserve_demand.Add(unserve_subdemand);
+            }
+        }
     }
 }

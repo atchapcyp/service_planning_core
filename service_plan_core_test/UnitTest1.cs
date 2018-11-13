@@ -8,9 +8,6 @@ namespace service_plan_core_test
 {
     public class UnitTest1
     {
-
-        //test using git
-        //test using git 2
         [Fact]
         public void PassingTest()
         {
@@ -32,10 +29,42 @@ namespace service_plan_core_test
         {
             return x + y;
         }
+
+        [Fact]
+        public void Test_sum_to_unserve_demand_Assign()
+        {
+            TF_Demand demand = new TF_Demand(720, 5,"xxx");
+            int[,] expected = demand.getDemand(1);
+            demand.
+            demand.sum_to_unserve_demand(1);
+            int[,] actual = demand.getDemand(1);
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Assert.Equal(expected[i, j], actual[i, j]);
+                }
+            }
+        }
+        [Fact]
+        public void Test_sum_to_unserve_demand_unassign(){
+            TF_Demand demand = new TF_Demand(720, 5);
+            int[,] expected = demand.getDemand(1);
+            demand.sum_to_unserve_demand(1);
+            int[,] actual = demand.getDemand(1);
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    Assert.Equal(expected[i, j], actual[i, j]);
+                }
+            }
+        }
         [Fact]
         public void Test_cal_service_util_must_reply_index(){
             Train_obj train = new Train_obj(200);
-            TF_Demand demand = new TF_Demand(1440,5);
+            TF_Demand demand = new TF_Demand(1440,5,"test");
             int[,] outbound_demand = new int[5, 5];
             List<Service> outbound_services = new List<Service>();
             int[] service = { 1, 0, 1, 1, 1 };

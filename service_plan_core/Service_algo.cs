@@ -219,12 +219,18 @@ namespace service_plan_core
             Console.WriteLine("------------------ ");
         }
 
-        static public void orchestrator_of_service(int[,] outbound_demand,Train_obj train,List<Service> services){
+        static public int[,] orchestrator_of_service(int[,] outbound_demand,Train_obj train,List<Service> services){
             while (!isDemandEmpty(outbound_demand)) {
                int s= index_of_most_utilize_service(outbound_demand, train, services);
+                if(cal_utilize_percent(outbound_demand,train,services[s])<=60){
+                    return outbound_demand;
+                   
+                }
                 actual_run(outbound_demand, train, services[s]);
             }
             Console.WriteLine("----END--OF--orchestrate-------- ");
+            return outbound_demand;
+
         }
 
 

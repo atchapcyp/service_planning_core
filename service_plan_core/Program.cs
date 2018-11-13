@@ -8,8 +8,8 @@ namespace service_plan_core
     {
         static void Main(string[] args)
         {
-            //   int[,] passeng ;
-            LogWriter log = new LogWriter("xxx");
+            String[] str1 = { "xxxx","YYY" };
+            int[,] unserve_demand;
             int[,] outbound_demand = new int[5, 5];
             int[,] inbound_demand = new int[5, 5];
             List<Service> outbound_services = new List<Service>();
@@ -22,7 +22,7 @@ namespace service_plan_core
             int[] service5 = { 1, 0, 0, 1, 1 };
             int[] service6 = { 1, 0, 1, 0, 1 };
             int[] service7 = { 0, 1, 1, 0, 1 };
-
+        
             Service aService;
 
             aService = new Service("aaa",service);
@@ -31,16 +31,16 @@ namespace service_plan_core
             outbound_services[0].show(); 
             aService = new Service("3_station_outbound", service2);
             outbound_services.Add(aService);
-            aService = new Service("2_station_outbound", service3);
-            outbound_services.Add(aService);
-            aService = new Service("4_station_outbound_start_at_1", service4);
-            outbound_services.Add(aService);
-            aService = new Service("3_station_outbound 0 1 0", service5);
-            outbound_services.Add(aService);
-            aService = new Service("3_station_outbound_start_at_1", service6);
-            outbound_services.Add(aService);
-            aService = new Service("3_station_outbound", service7);
-            outbound_services.Add(aService);
+            //aService = new Service("2_station_outbound", service3);
+            //outbound_services.Add(aService);
+            //aService = new Service("4_station_outbound_start_at_1", service4);
+            //outbound_services.Add(aService);
+            //aService = new Service("3_station_outbound 0 1 0", service5);
+            //outbound_services.Add(aService);
+            //aService = new Service("3_station_outbound_start_at_1", service6);
+            //outbound_services.Add(aService);
+            //aService = new Service("3_station_outbound", service7);
+            //outbound_services.Add(aService);
            
 
 
@@ -54,9 +54,17 @@ namespace service_plan_core
                 Console.WriteLine("This is all station demand . at : " + i);
                 Service_algo.showarray(passeng_demand.demand[i]);
             }
-            Service_algo.orchestrator_of_service(outbound_demand, train, outbound_services);
-    
+
+            unserve_demand=Service_algo.orchestrator_of_service(outbound_demand, train, outbound_services);
+            Console.WriteLine("This is unserved demand . ");
+            Service_algo.showarray(unserve_demand);
+            passeng_demand.set_unserve(unserve_demand, 0);
+            Console.WriteLine("This is unserved demand in TF demand. ");
+            Service_algo.showarray(passeng_demand.unserve_demand[0]);
             Console.WriteLine("This is LAST demand . ");
+            Service_algo.showarray(passeng_demand.getDemand(0));
+
+            //LogWriter log = new LogWriter(str+str1[0]+str1[1]);
         }
     }
 
