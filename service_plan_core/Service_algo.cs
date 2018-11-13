@@ -181,7 +181,7 @@ namespace service_plan_core
             }
         }
 
-        static public int index_of_most_utilize_service(int[,] outbound_demand,Train_obj train,List<Service> services)
+        static public (int,float) index_of_most_utilize_service(int[,] outbound_demand,Train_obj train,List<Service> services)
         {
             int counter = 0;
             int index_of_max_util=0;
@@ -199,7 +199,7 @@ namespace service_plan_core
                     Console.WriteLine("Percent service utilize : " + new_util_percent);
                 if (Math.Abs(100-new_util_percent)<=float.Epsilon) {//float compare
                     Console.WriteLine("FLOAT CHECK EQUAL 100");
-                    return i; 
+                    return (i,100); 
                 }
                 if(new_util_percent>util_percent){
                     util_percent = new_util_percent;
@@ -207,7 +207,7 @@ namespace service_plan_core
                 }
             }
 
-            return index_of_max_util;
+            return (index_of_max_util,util_percent);
         }
 
         static public void actual_run(int[,] outbound_demand,Train_obj train,Service service){
@@ -221,10 +221,13 @@ namespace service_plan_core
 
         static public int[,] orchestrator_of_service(int[,] outbound_demand,Train_obj train,List<Service> services){
             while (!isDemandEmpty(outbound_demand)) {
-               int s= index_of_most_utilize_service(outbound_demand, train, services);
-                if(cal_utilize_percent(outbound_demand,train,services[s])<=60){
+                float p;
+                int s=0;
+                (s,p)= index_of_most_utilize_service(outbound_demand, train, services);
+                Console.WriteLine("this is PERCENT " + p);
+                if(p<=60){
                     return outbound_demand;
-                   
+                  
                 }
                 actual_run(outbound_demand, train, services[s]);
             }
