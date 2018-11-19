@@ -8,7 +8,9 @@ namespace service_plan_core
         public int interval;
         public int dimension;
         public List<int[,]> demand=new List<int[,]>();
-        public List<int[,]> unserve_demand = new List<int[,]>(); 
+        public List<int[,]> unserve_demand = new List<int[,]>();
+        public int[,] carry_matrix = new int[5,5];
+
         public TF_Demand() { }
         public TF_Demand(int dimension){
             int[,] subdemand = new int[dimension,dimension];
@@ -18,8 +20,9 @@ namespace service_plan_core
             {
                 for (int j = 0; j < dimension; j++)
                 {
+                    this.carry_matrix[i, j] = -1;
                     subdemand[i, j] = GetRandomNumber(10, 100);
-                    unserve_subdemand[i, j] = 0;
+                    unserve_subdemand[i, j] = subdemand[i,j];
                     if (i == j)
                     {
                         subdemand[i, j] = 0;
@@ -45,6 +48,7 @@ namespace service_plan_core
                 {
                     for (int j = 0; j < dimension; j++)
                     {
+                        this.carry_matrix[i, j] = -1;
                         subdemand[i, j] = GetRandomNumber(50, 200);
                         unserve_subdemand[i, j] = 0;
                         if (i == j)
@@ -72,6 +76,7 @@ namespace service_plan_core
                 {
                     for (int j = 0; j < dimension; j++)
                     {
+                        this.carry_matrix[i, j] = -1;
                         subdemand[i, j] = GetRandomNumber(10, 100);
                         unserve_subdemand[i, j] = 0;
                         if (i == j)

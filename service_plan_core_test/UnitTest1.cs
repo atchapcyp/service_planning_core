@@ -35,7 +35,7 @@ namespace service_plan_core_test
         {
             TF_Demand demand = new TF_Demand(720, 5,"xxx");
             int[,] expected = demand.getDemand(1);
-            demand.
+
             demand.sum_to_unserve_demand(1);
             int[,] actual = demand.getDemand(1);
 
@@ -71,6 +71,9 @@ namespace service_plan_core_test
             int[] service2 = { 0, 0, 1, 0, 1 };
             int[] service3 = { 1, 1, 1, 1, 1 };
             int[] service4 = { 0, 1, 1, 1, 1 };
+            List<int[]> test1 = new List<int[]>();
+            test1.Add(service);
+            test1.Add(service2);
             Service aService;
             aService = new Service("aaa", service);
             outbound_services.Add(aService);

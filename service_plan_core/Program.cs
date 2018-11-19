@@ -63,8 +63,10 @@ namespace service_plan_core
             Service_algo.showarray(passeng_demand.unserve_demand[0]);
             Console.WriteLine("This is LAST demand . ");
             Service_algo.showarray(passeng_demand.getDemand(0));
-
-            //LogWriter log = new LogWriter(str+str1[0]+str1[1]);
+            Console.WriteLine("This is carry matrix . ");
+            Service_algo.showarray(passeng_demand.carry_matrix);
+            Console.WriteLine("Sum");
+            LogWriter log = new LogWriter(str1[0]+str1[1]);
         }
     }
 

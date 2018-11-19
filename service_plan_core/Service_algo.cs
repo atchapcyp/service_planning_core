@@ -227,7 +227,6 @@ namespace service_plan_core
                 Console.WriteLine("this is PERCENT " + p);
                 if(p<=60){
                     return outbound_demand;
-                  
                 }
                 actual_run(outbound_demand, train, services[s]);
             }
