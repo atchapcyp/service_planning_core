@@ -107,11 +107,11 @@ namespace service_plan_core
 
         public int[,] getOutbound_demand(int n){
             int[,] fullmatrix = this.demand[n];
-            int[,] halfmatrix = new int[5, 5];
+            int[,] halfmatrix = new int[this.dimension, this.dimension];
 
-                for (int i = 0; i < 5; i++)
+            for (int i = 0; i < this.dimension; i++)
                 {
-                    for (int j = 0; j < 5; j++)
+                for (int j = 0; j < this.dimension; j++)
                     {
                         if (i < j)
                         {
@@ -124,11 +124,11 @@ namespace service_plan_core
         public int[,] getInbound_demand(int n)
         {
             int[,] fullmatrix = this.demand[n];
-            int[,] halfmatrix = new int[5, 5];
+            int[,] halfmatrix = new int[this.dimension, this.dimension];
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < this.dimension; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < this.dimension; j++)
                 {
 
                     if (i > j)

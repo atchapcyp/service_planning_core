@@ -25,14 +25,14 @@ namespace service_plan_core
         
             Service aService;
 
-            aService = new Service("aaa",service);
+            aService = new Service("All_station",service);
             //add service to list
             outbound_services.Add(aService);
             outbound_services[0].show(); 
             aService = new Service("3_station_outbound", service2);
             outbound_services.Add(aService);
-            //aService = new Service("2_station_outbound", service3);
-            //outbound_services.Add(aService);
+            aService = new Service("4_station_outbound_start_at_1", service4);
+            outbound_services.Add(aService);
             //aService = new Service("4_station_outbound_start_at_1", service4);
             //outbound_services.Add(aService);
             //aService = new Service("3_station_outbound 0 1 0", service5);
