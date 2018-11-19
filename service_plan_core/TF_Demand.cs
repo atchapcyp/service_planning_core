@@ -11,6 +11,7 @@ namespace service_plan_core
         public List<int[,]> unserve_demand = new List<int[,]>();
         public int[,] carry_matrix = new int[5,5];
 
+
         public TF_Demand() { }
         public TF_Demand(int dimension){
             int[,] subdemand = new int[dimension,dimension];
@@ -105,46 +106,6 @@ namespace service_plan_core
             return this.unserve_demand[i];
         }
 
-        public int[,] getOutbound_demand(int n){
-            int[,] fullmatrix = this.demand[n];
-            int[,] halfmatrix = new int[this.dimension, this.dimension];
-
-            for (int i = 0; i < this.dimension; i++)
-                {
-                for (int j = 0; j < this.dimension; j++)
-                    {
-                        if (i < j)
-                        {
-                            halfmatrix[i, j] = fullmatrix[i, j];
-                        }
-                    }
-                }
-            return halfmatrix;   
-    }
-        public int[,] getInbound_demand(int n)
-        {
-            int[,] fullmatrix = this.demand[n];
-            int[,] halfmatrix = new int[this.dimension, this.dimension];
-
-            for (int i = 0; i < this.dimension; i++)
-            {
-                for (int j = 0; j < this.dimension; j++)
-                {
-
-                    if (i > j)
-                    {
-                        int k = 4 - i;
-                        int l = 4 - j;
-                        halfmatrix[k, l] = fullmatrix[i, j];
-                    }
-                    else
-                    {
-                        halfmatrix[j, i] = 0;
-                    }
-                }
-            }
-            return halfmatrix;
-        }
 
         // dont forget to add unittest
         public void commit_update_demand(int[,] latest_demand,int i){ 
@@ -200,6 +161,57 @@ namespace service_plan_core
                 this.demand.Add(subdemand);
                 this.unserve_demand.Add(unserve_subdemand);
             }
+        }
+
+        public TF_Demand Gen_Outbound_demand()
+        {
+            TF_Demand outbound = new TF_Demand(this.interval, this.dimension);
+          
+            int[,] halfmatrix = new int[this.dimension, this.dimension];
+            for (int k = 0; k < this.demand.Count; k++)
+            {
+                for (int i = 0; i < this.dimension; i++)
+                {
+                    for (int j = 0; j < this.dimension; j++)
+                    {
+                        if (i < j)
+                        {
+                            outbound.demand[k][i, j] = this.demand[k][i, j];
+                        }else{
+                            outbound.demand[k][i, j ]= 0;
+                        }
+                    }
+                }
+            }
+            return outbound;
+        }
+
+        public TF_Demand Gen_Inbound_demand()
+        {
+            TF_Demand inbound = new TF_Demand(this.interval, this.dimension);
+            int[,] halfmatrix = new int[this.dimension, this.dimension];
+            for (int k = 0; k < this.demand.Count; k++)
+            {
+                for (int i = 0; i < this.dimension; i++)
+                {
+                    for (int j = 0; j < this.dimension; j++)
+                    {
+
+                        if (i > j)
+                        {
+                            int m = this.dimension-1 - i;
+                            int l = dimension-1 - j;
+                            inbound.demand[k][m, l] = this.demand[k][i, j];
+                        }
+                        else
+                        {
+                            inbound.demand[k][j, i] = 0;
+                        }
+                    }
+                }
+            }
+                return inbound;
+            
         }
     }
 }
