@@ -31,6 +31,34 @@ namespace service_plan_core_test
         }
 
         [Fact]
+        public void Test_Gen_outbound_TF_Demand_method(){
+            TF_Demand demand = new TF_Demand(720, 5);
+            int[,] A ={{ 00, 01, 02, 03, 04 },
+            { 10, 11, 12, 13, 14 },
+            { 20, 21, 22, 23, 24 },
+            { 30, 31, 32, 33, 34 },
+            { 40, 41, 42, 43, 44 } };
+            demand.demand[0] = A;
+            TF_Demand outbound_demand = demand.Gen_Outbound_demand();
+            int[,] expected = {
+            { 0, 01, 02, 03, 04 },
+            { 0, 0 , 12, 13, 14 },
+            { 0, 0 , 0 , 23, 24 },
+            { 0, 0 , 0 , 0,  34 },
+            { 0, 0 , 0 , 0,  0 } };
+            for (int k = 0; k < 1; k++)
+            {
+                for (int i = 0; i < outbound_demand.dimension; i++)
+                {
+                    for (int j = 0; j < outbound_demand.dimension; j++)
+                    {
+                        Assert.Equal(expected[i,j], outbound_demand.demand[k][i, j]);
+                    }
+                }
+            }
+        }
+
+        [Fact]
         public void Test_sum_to_unserve_demand_Assign()
         {
             TF_Demand demand = new TF_Demand(720, 5,"xxx");
@@ -83,7 +111,7 @@ namespace service_plan_core_test
             outbound_services.Add(aService);
             aService = new Service("4_station_outbound_start_at_1", service4);
             outbound_services.Add(aService);
-            outbound_demand = demand.getOutbound_demand(0);
+           //outbound_demand = demand.getOutbound_demand(0);
             int actual=Service_algo.cal_all_service_util(outbound_demand,train,outbound_services);
             int expected = 0;
             Assert.Equal(expected, actual);
@@ -189,57 +217,8 @@ namespace service_plan_core_test
         }
         
 
-        [Fact]
-        public void Test_split_matrix_to_inbound()
-        {
-            TF_Demand t = new TF_Demand(5);
-           
-            int[,] A ={{ 00, 01, 02, 03, 04 },
-            { 10, 11, 12, 13, 14 },
-            { 20, 21, 22, 23, 24 },
-            { 30, 31, 32, 33, 34 },
-            { 40, 41, 42, 43, 44 } };
-            t.demand.Insert(0, A);
+      
 
-            int[,] actual = t.getInbound_demand(0);
-            int[,] expected = {
-            { 0, 43, 42, 41, 40 },
-            { 0, 0 , 32, 31, 30 },
-            { 0, 0 , 0 , 21, 20 },
-            { 0, 0 , 0 , 0,  10 },
-            { 0, 0 , 0 , 0,  0 } };
-
-            for (int i = 0; i < 5; i++)
-            {
-                for (int j = 0; j < 5; j++)
-                {
-                    Assert.Equal(expected[i, j], actual[i, j]);
-                }
-            }
-        }
-
-        [Fact]
-        public void Test_split_matrix_to_outbound()
-        {
-            TF_Demand t = new TF_Demand(5);
-            int[,] fullmatrix = {
-            { 00, 01, 02, 03, 04 },
-            { 10, 11, 12, 13, 14 },
-            { 20, 21, 22, 23, 24 },
-            { 30, 10, 32, 33, 34 },
-            { 40, 41, 42, 43, 44 } };
-            t.demand.Insert(0, fullmatrix);
-
-            int[,] actual = t.getOutbound_demand(0);
-            int[,] expected = {
-             { 0, 01, 02, 03, 04 },
-            { 0, 0, 12, 13, 14 },
-            { 0, 0, 0, 23, 24 },
-            { 0, 0, 0, 0, 34 },
-            { 0, 0, 0, 0, 0 } };
-
-            Assert.Equal(expected, actual);
-        }
     
 
         [Fact]

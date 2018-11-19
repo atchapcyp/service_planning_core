@@ -165,7 +165,7 @@ namespace service_plan_core
 
         public TF_Demand Gen_Outbound_demand()
         {
-            TF_Demand outbound = new TF_Demand(this.interval, this.dimension);
+            TF_Demand outbound = new TF_Demand(this.interval, this.dimension,"O","B");
           
             int[,] halfmatrix = new int[this.dimension, this.dimension];
             for (int k = 0; k < this.demand.Count; k++)
@@ -188,8 +188,8 @@ namespace service_plan_core
 
         public TF_Demand Gen_Inbound_demand()
         {
-            TF_Demand inbound = new TF_Demand(this.interval, this.dimension);
-            int[,] halfmatrix = new int[this.dimension, this.dimension];
+            TF_Demand inbound = new TF_Demand(this.interval, this.dimension,"I","B");
+
             for (int k = 0; k < this.demand.Count; k++)
             {
                 for (int i = 0; i < this.dimension; i++)
@@ -212,6 +212,20 @@ namespace service_plan_core
             }
                 return inbound;
             
+        }
+
+        public TF_Demand(int timeframe_interval, int dimension,String a,String b) // minute
+        {
+            this.dimension = dimension;
+            this.interval = timeframe_interval;
+            int m = 24 * 60 / timeframe_interval;
+            for (int k = 0; k < m; k++)
+            {
+                int[,] subdemand = new int[dimension, dimension];
+                int[,] unserve_subdemand = new int[dimension, dimension];
+                this.demand.Add(subdemand);
+                this.unserve_demand.Add(unserve_subdemand);
+            }
         }
     }
 }

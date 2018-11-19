@@ -9,7 +9,7 @@ namespace service_plan_core
         static void Main(string[] args)
         {
             String[] str1 = { "xxxx","YYY" };
-            int[,] unserve_demand;
+           //int[,] unserve_demand;
             List<Service> outbound_services = new List<Service>();
             List<int[]> backward = new List<int[]>();
             Train_obj train = new Train_obj(200);
@@ -44,7 +44,7 @@ namespace service_plan_core
 
             //add demand to be time frame demand
 
-            TF_Demand passeng_demand = new TF_Demand(1440,5);
+            TF_Demand passeng_demand = new TF_Demand(720,5);
             TF_Demand outbound_demand = passeng_demand.Gen_Outbound_demand();
             TF_Demand inbound_demand = passeng_demand.Gen_Inbound_demand();
             for (int i = 0; i < passeng_demand.getTF_amount(); i++)
@@ -58,6 +58,10 @@ namespace service_plan_core
             Service_algo.showarray(outbound_demand.demand[0]);
             Console.WriteLine("This is INBOUND demand . ");
             Service_algo.showarray(inbound_demand.demand[0]);
+            Console.WriteLine("This is OUTBOUND 1 demand . ");
+            Service_algo.showarray(outbound_demand.demand[1]);
+            Console.WriteLine("This is INBOUND 1 demand . ");
+            Service_algo.showarray(inbound_demand.demand[1]);
 
             //Service_algo.showarray(unserve_demand);
             //passeng_demand.set_unserve(unserve_demand, 0);
