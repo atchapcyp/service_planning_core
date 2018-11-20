@@ -9,6 +9,12 @@ namespace service_plan_core
         public int dimension;
         public List<int[,]> demand=new List<int[,]>();
         public List<int[,]> unserve_demand = new List<int[,]>();
+        public int[,] cal_demand = {
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0}};
         public int[,] carry_matrix = {
             {-1,-1,-1,-1,-1},
             {-1,-1,-1,-1,-1},
@@ -27,7 +33,7 @@ namespace service_plan_core
                 {
 
                     subdemand[i, j] = GetRandomNumber(10, 100);
-                    unserve_subdemand[i, j] = subdemand[i,j];
+                    unserve_subdemand[i, j] = 0;
                     if (i == j)
                     {
                         subdemand[i, j] = 0;
@@ -54,7 +60,7 @@ namespace service_plan_core
                     for (int j = 0; j < dimension; j++)
                     {
 
-                        subdemand[i, j] = GetRandomNumber(50, 200);
+                        subdemand[i, j] = GetRandomNumber(123, 123);
                         unserve_subdemand[i, j] = 0;
                         if (i == j)
                         {
@@ -230,6 +236,17 @@ namespace service_plan_core
                 this.demand.Add(subdemand);
                 this.unserve_demand.Add(unserve_subdemand);
 
+            }
+        }
+
+        public void get_demand(int i){
+            int[,] current_demand = this.demand[i];
+            for (int out_loop = 0; out_loop < this.dimension; out_loop++)
+            {
+                for (int in_loop = out_loop + 1; in_loop < this.dimension; in_loop++)
+                {
+                    cal_demand[out_loop, in_loop] += current_demand[out_loop, in_loop];
+                }
             }
         }
     }

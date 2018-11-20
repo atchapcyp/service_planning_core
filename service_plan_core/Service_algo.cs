@@ -30,15 +30,17 @@ namespace service_plan_core
             Console.ReadLine();
         }
 
-        public static void Train_a_b_c_d_e(int[,] demand, Train_obj train,Service aService)
+        public static void Train_a_b_c_d_e(TF_Demand demands, Train_obj train, Service aService, int timeframe)
         {
             int[,] actual_getoff = new int[5, 5];
             int get_off_next_station = 0;
-            int i, j, k,next_station_index=-1;
-                        for (i = 0; i < 5; i++) { 
-                if (aService.stop_station[i]==0){
+            int i, j, k, next_station_index = -1;
+            for (i = 0; i < 5; i++)
+            {
+                if (aService.stop_station[i] == 0)
+                {
                     continue;
-               }
+                }
                 for (int a = 4; a > i; a--)
                 {
                     if (aService.stop_station[a] == 1)
@@ -50,70 +52,107 @@ namespace service_plan_core
                 int demand_at_station = 0;
 
                 Console.WriteLine("Remainning Seat : " + train.remain_cap);
-                get_off_next_station = sum_get_off(i);
+                get_off_next_station = train.passenger[i];
                 Console.WriteLine("Number of getting off passenger at station " + i + " = " + get_off_next_station);
-                train.remain_cap += get_off_next_station;
+                train.getOff(i);
                 Console.WriteLine("Remainning Seat after get off : " + train.remain_cap);
-                get_off_next_station = 0;
                 for (k = i + 1; k < 5; k++) // sum of demand at station i
-                { if (aService.stop_station[k] == 0) { continue; }
-                    demand_at_station += demand[i, k];
-                    Console.WriteLine("Demand at station " + i + " to station " + k + " is " + demand[i, k]);
+                {
+                    if (aService.stop_station[k] == 0) { continue; }
+                    demand_at_station += demands.cal_demand[i, k];
+                    Console.WriteLine("Demand at station " + i + " to station " + k + " is " + demands.cal_demand[i, k]);
                 }
                 Console.WriteLine("All of Demand at station " + i + " is " + demand_at_station);
                 if (demand_at_station < train.remain_cap)
                 {
-                    train.remain_cap -= demand_at_station;
                     for (j = i + 1; j < 5; j++)
                     {
                         if (aService.stop_station[j] == 0) { continue; }
-                        actual_getoff[i, j] = demand[i, j];
-                        demand[i, j] = 0;
+                        train.getOn(demands.cal_demand[i, j], j);
+
+                        demands.cal_demand[i, j] = 0;
+                        clear_remain_demand(demands, timeframe, i, j);
                     }
                 }
                 else
                 {
                     double ratio = 1.0 * train.remain_cap / demand_at_station;
                     demand_at_station = 0;
+                    int fill_demand;
+                    for (j = i + 1; j < 5; j++)
+                    {
+                        if (aService.stop_station[j] == 0) { continue; }
+
+                        fill_demand = (int)(demands.cal_demand[i, j] * ratio);
+
+
+                        demand_at_station += fill_demand;
+
+                    }
+                    int remain_cap = train.remain_cap;
+                    remain_cap -= demand_at_station;
                     for (j = i + 1; j < 5; j++)
                     {
                         if (aService.stop_station[j] == 0) { continue; }
                         Console.WriteLine("..............Debug train remainning seat  " + train.remain_cap);
                         Console.WriteLine("..............Debug Demand at station      " + demand_at_station);
                         Console.WriteLine("..............Debug ratio      " + ratio);
-                        int fill_demand = (int)(demand[i, j] * ratio);
+                        fill_demand = (int)(demands.cal_demand[i, j] * ratio);
+
                         Console.WriteLine("..............Debug fill_demand  " + fill_demand);
                         actual_getoff[i, j] = fill_demand;
-                        demand[i, j] -= fill_demand;
+                        if (remain_cap > 0 && demands.cal_demand[i, j] > fill_demand)
+                        {
+                            demands.cal_demand[i, j] -= (fill_demand + 1);
+                            train.getOn(fill_demand + 1, j);
+                            update_remain_demand(demands, timeframe, fill_demand + 1, i, j);
+                            remain_cap -= 1;
+                        }
+                        else
+                        {
+                            demands.cal_demand[i, j] -= fill_demand;
+                            train.getOn(fill_demand, j);
+                            update_remain_demand(demands, timeframe, fill_demand, i, j);
+                        }
                         demand_at_station += fill_demand;
 
                     }
+                    Console.WriteLine("..............train remainning seat AFTER  " + train.remain_cap);
+                }
 
-                    train.remain_cap -= demand_at_station;
-                    Console.WriteLine("..............train remainning seat BEFORE " + train.remain_cap);
-                    int round_up_count = train.remain_cap;
-                    for (j = next_station_index; j < round_up_count+next_station_index; j++)
-                    {
-                        Console.WriteLine("..............ROUND UP AT : " + i +j);
-                        actual_getoff[i, j]++;
-                        demand[i, j] -= 1;
-                        demand_at_station++;
-                        train.remain_cap--;
+            }
+        }
+
+        public static void update_remain_demand(TF_Demand demands,int timeframe,int fill_demand,int i,int j){
+            if( demands.carry_matrix[i,j]==-1){
+                demands.demand[timeframe][i, j] -= fill_demand;
+            }
+            else {
+                for (int k = demands.carry_matrix[i, j]; k <= timeframe;k++){
+                    if (demands.demand[k][i, j] < fill_demand) {
+                        fill_demand -= demands.demand[k][i, j];
+                        demands.demand[k][i, j] = 0;
                     }
-                      Console.WriteLine("..............train remainning seat AFTER  " + train.remain_cap);
+                    else{
+                        demands.demand[k][i, j] -= fill_demand;
+                        return;
+                    }
                 }
             }
-
-
-            int sum_get_off(int station)
-            {   if (station == 0) return 0; 
-                    int l;
-                    int sum = 0;
-                    for (l = 0; l < 5; l++)
-                    {
-                        sum += actual_getoff[l, station];
-                    }
-                    return sum;
+        }
+        public static void clear_remain_demand(TF_Demand demands, int timeframe, int i, int j)
+        {
+            if (demands.carry_matrix[i, j] == -1)
+            {
+                demands.demand[timeframe][i, j] = 0;
+            }
+            else
+            {
+                for (int k = demands.carry_matrix[i, j]; k <= timeframe; k++)
+                {
+                        demands.demand[k][i, j] = 0;
+                 
+                }
             }
         }
 
@@ -210,23 +249,27 @@ namespace service_plan_core
             return (index_of_max_util,util_percent);
         }
 
-        static public void actual_run(int[,] outbound_demand,Train_obj train,Service service){
+        static public void actual_run(TF_Demand demands,Train_obj train,Service service,int timeframe){
             Console.WriteLine("ACTUAL_RUN . ");
             Console.WriteLine(service.service_id);
-            Train_a_b_c_d_e(outbound_demand, train, service);
+            Train_a_b_c_d_e(demands, train, service,timeframe);
             Console.WriteLine("This is remainning demand . ");
-            showarray(outbound_demand);
+            showarray(demands.cal_demand);
+            Console.WriteLine("This is CURRENT demand . ");
+            showarray(demands.demand[timeframe]);
             Console.WriteLine("------------------ ");
         }
 
         static public void orchestrator_of_service(TF_Demand outbound_demand,Train_obj train,List<Service> services){
             for (int i = 0; i < outbound_demand.demand.Count; i++)
             {
+                outbound_demand.get_demand(i);
                 while (!isDemandEmpty(outbound_demand.demand[i]))
                 {
+   
                     float p;
                     int s = 0;
-                    (s, p) = index_of_most_utilize_service(outbound_demand.demand[i], train, services);
+                    (s, p) = index_of_most_utilize_service(outbound_demand.cal_demand, train, services);
                     Console.WriteLine("\n\nthis is CARRY_matrix \n\n\n");
                     showarray(outbound_demand.carry_matrix);
                     Console.WriteLine("this is PERCENT " + p);
@@ -242,7 +285,7 @@ namespace service_plan_core
                         }
                         break;
                     }
-                    actual_run(outbound_demand.demand[i], train, services[s]);
+                    actual_run(outbound_demand, train, services[s],i);
                 }
                 Console.WriteLine("----END--OF--orchestrate----LOOP--- "+i+"\n\n\n\n\n");
             }

@@ -40,11 +40,9 @@ namespace service_plan_core
             //aService = new Service("3_station_outbound", service7);
             //outbound_services.Add(aService);
            
-
-
             //add demand to be time frame demand
 
-            TF_Demand passeng_demand = new TF_Demand(720,5);
+            TF_Demand passeng_demand = new TF_Demand(360,5);
             TF_Demand outbound_demand = passeng_demand.Gen_Outbound_demand();
             TF_Demand inbound_demand = passeng_demand.Gen_Inbound_demand();
             for (int i = 0; i < passeng_demand.getTF_amount(); i++)
@@ -63,10 +61,9 @@ namespace service_plan_core
             Console.WriteLine("This is INBOUND 1 demand . ");
             Service_algo.showarray(inbound_demand.demand[1]);
 
-            //Service_algo.showarray(unserve_demand);
-            //passeng_demand.set_unserve(unserve_demand, 0);
-          // Console.WriteLine("This is unserved demand in TF demand. ");
-           // Service_algo.showarray(passeng_demand.unserve_demand[0]);
+
+           Console.WriteLine("This is unserved demand in TF demand. ");
+            Service_algo.showarray(outbound_demand.unserve_demand[0]);
             Console.WriteLine("This is LAST demand . ");
             Service_algo.showarray(passeng_demand.getDemand(0));
             Console.WriteLine("This is carry matrix . ");

@@ -8,6 +8,7 @@ namespace service_plan_core
     {
         public int cap = 150;
         public int remain_cap = 150;
+        public int[] passenger = new int[20];
         public Train_obj()
         { }
         public Train_obj(int c)
@@ -15,11 +16,13 @@ namespace service_plan_core
             cap = c;
             remain_cap = cap;
         }
-        public void getOn(int amount){
+        public void getOn(int amount, int i){
             this.remain_cap -= amount;
+            passenger[i] += amount;
         }
-        public void getOff(int amount){
-            this.remain_cap += amount;
+        public void getOff(int i){
+            this.remain_cap += passenger[i];
+            passenger[i] = 0;
         }
     }
 }
