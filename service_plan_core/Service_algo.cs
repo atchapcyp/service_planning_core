@@ -219,20 +219,34 @@ namespace service_plan_core
             Console.WriteLine("------------------ ");
         }
 
-        static public int[,] orchestrator_of_service(int[,] outbound_demand,Train_obj train,List<Service> services){
-            while (!isDemandEmpty(outbound_demand)) {
-                float p;
-                int s=0;
-                (s,p)= index_of_most_utilize_service(outbound_demand, train, services);
-                Console.WriteLine("this is PERCENT " + p);
-                if(p<=60){
-                    return outbound_demand;
+        static public void orchestrator_of_service(TF_Demand outbound_demand,Train_obj train,List<Service> services){
+            for (int i = 0; i < outbound_demand.demand.Count; i++)
+            {
+                while (!isDemandEmpty(outbound_demand.demand[i]))
+                {
+                    float p;
+                    int s = 0;
+                    (s, p) = index_of_most_utilize_service(outbound_demand.demand[i], train, services);
+                    Console.WriteLine("\n\nthis is CARRY_matrix \n\n\n");
+                    showarray(outbound_demand.carry_matrix);
+                    Console.WriteLine("this is PERCENT " + p);
+                    if (p <= 60)
+                    {
+                        for (int out_loop = 0; out_loop < outbound_demand.dimension;out_loop++){
+                            for (int in_loop = out_loop+1 ; in_loop <outbound_demand.dimension;in_loop++){
+                                if (outbound_demand.demand[i][out_loop,in_loop] > 0)
+                                {
+                                    outbound_demand.carry_matrix[out_loop, in_loop] = i;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    actual_run(outbound_demand.demand[i], train, services[s]);
                 }
-                actual_run(outbound_demand, train, services[s]);
+                Console.WriteLine("----END--OF--orchestrate----LOOP--- "+i+"\n\n\n\n\n");
             }
-            
             Console.WriteLine("----END--OF--orchestrate-------- ");
-            return outbound_demand;
 
         }
 

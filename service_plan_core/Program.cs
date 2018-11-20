@@ -53,7 +53,7 @@ namespace service_plan_core
                 Service_algo.showarray(passeng_demand.demand[i]);
             }
 
-            //unserve_demand=Service_algo.orchestrator_of_service(outbound_demand, train, outbound_services);
+            Service_algo.orchestrator_of_service(outbound_demand, train, outbound_services);
             Console.WriteLine("This is OUTBOUND demand . ");
             Service_algo.showarray(outbound_demand.demand[0]);
             Console.WriteLine("This is INBOUND demand . ");
@@ -65,12 +65,12 @@ namespace service_plan_core
 
             //Service_algo.showarray(unserve_demand);
             //passeng_demand.set_unserve(unserve_demand, 0);
-            Console.WriteLine("This is unserved demand in TF demand. ");
-            Service_algo.showarray(passeng_demand.unserve_demand[0]);
+          // Console.WriteLine("This is unserved demand in TF demand. ");
+           // Service_algo.showarray(passeng_demand.unserve_demand[0]);
             Console.WriteLine("This is LAST demand . ");
             Service_algo.showarray(passeng_demand.getDemand(0));
             Console.WriteLine("This is carry matrix . ");
-            Service_algo.showarray(passeng_demand.carry_matrix);
+            Service_algo.showarray(outbound_demand.carry_matrix);
             Console.WriteLine("Sum");
             LogWriter log = new LogWriter(str1[0]+str1[1]);
         }
