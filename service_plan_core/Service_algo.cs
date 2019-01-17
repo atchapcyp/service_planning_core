@@ -95,7 +95,7 @@ namespace service_plan_core
                     {
                         if (aService.stop_station[j] == 0) { continue; }
                         Console.WriteLine("..............Debug train remainning seat  " + train.remain_cap);
-                        Console.WriteLine("..............Debug Demand at station      " + demand_at_station);
+                        Console.WriteLine("..............Debug Demand at station      " + demands.cal_demand[i,j]);
                         Console.WriteLine("..............Debug ratio      " + ratio);
                         fill_demand = (int)(demands.cal_demand[i, j] * ratio);
 
@@ -386,7 +386,7 @@ namespace service_plan_core
                         if (service.stop_station[j] == 0) { continue; }
 
                         int fill_demand = (int)(cal_demand[i, j] * ratio);
-                     
+                    
                         actual_getoff[i, j] = fill_demand;
                         cal_demand[i, j] -= fill_demand;
                         demand_at_station += fill_demand;

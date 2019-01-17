@@ -133,7 +133,8 @@ namespace service_plan_core_test
         public void Test_getOff_TrainClass()
         {
             Train_obj train = new Train_obj(100);
-            train.getOn(50);
+            
+            train.getOn(50,1);
             train.getOff(50);
             int actual = train.remain_cap;
             int expected = 100;
@@ -143,7 +144,7 @@ namespace service_plan_core_test
         [Fact]
         public void Test_getOn_TrainClass(){
             Train_obj train = new Train_obj(100);
-            train.getOn(50);
+            train.getOn(5,1);
             int actual = train.remain_cap;
             int expected = 50;
             Assert.Equal(expected, actual);

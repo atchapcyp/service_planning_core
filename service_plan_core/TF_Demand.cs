@@ -60,7 +60,7 @@ namespace service_plan_core
                     for (int j = 0; j < dimension; j++)
                     {
 
-                        subdemand[i, j] = GetRandomNumber(123, 123);
+                        subdemand[i, j] = GetRandomNumber(100, 100);
                         unserve_subdemand[i, j] = 0;
                         if (i == j)
                         {
