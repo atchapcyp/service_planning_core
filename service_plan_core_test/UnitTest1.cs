@@ -225,6 +225,8 @@ namespace service_plan_core_test
         [Fact]
         public void Train_service_3_station()
         {
+            TF_Demand tfd = new TF_Demand(1440, 5, "TEST");
+
             int[,] demand = {
             { 0, 10, 10, 10, 10 },
             { 10, 0, 10, 10, 10 },
@@ -232,6 +234,7 @@ namespace service_plan_core_test
             { 10, 10, 10, 0, 10 },
             { 10, 10, 10, 10, 0 } };
 
+            tfd.demand[0] = demand;
             Train_obj train = new Train_obj(10);
             List<Service> forward = new List<Service>();
             int[] service_3_station = { 1, 0, 1, 0, 1 };
@@ -245,7 +248,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 5 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
+            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -260,6 +263,8 @@ namespace service_plan_core_test
         [Fact]
         public void Train_service_3_station_no_overcap()
         {
+            TF_Demand tfd = new TF_Demand(1440, 5, "TEST");
+
             int[,] demand = {
             { 0, 10, 10, 10, 10 },
             { 10, 0, 10, 10, 10 },
@@ -267,6 +272,7 @@ namespace service_plan_core_test
             { 10, 10, 10, 0, 10 },
             { 10, 10, 10, 10, 0 } };
 
+            tfd.demand[0] = demand;
             Train_obj train = new Train_obj(30);
             List<Service> forward = new List<Service>();
             int[] service_3_station = { 1, 0, 1, 0, 1 };
@@ -280,7 +286,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
+            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -294,12 +300,16 @@ namespace service_plan_core_test
         [Fact]
         public void Train_service_4_station()
         {
+            TF_Demand tfd = new TF_Demand(1440, 5, "TEST");
+
             int[,] demand = {
             { 0, 10, 10, 10, 10 },
             { 10, 0, 10, 10, 10 },
             { 10, 10, 0, 10, 10 },
             { 10, 10, 10, 0, 10 },
             { 10, 10, 10, 10, 0 } };
+
+            tfd.demand[0] = demand;
 
             Train_obj train = new Train_obj(30);
             int[] service_4_station = { 1, 1, 1, 0, 1 };
@@ -314,7 +324,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
+            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -329,12 +339,16 @@ namespace service_plan_core_test
         [Fact]
         public void Train_service_4_station_no_overcap()
         {
+            TF_Demand tfd = new TF_Demand(1440, 5, "TEST");
+
             int[,] demand = {
             { 0, 10, 10, 10, 10 },
             { 10, 0, 10, 10, 10 },
             { 10, 10, 0, 10, 10 },
             { 10, 10, 10, 0, 10 },
             { 10, 10, 10, 10, 0 } };
+
+            tfd.demand[0] = demand;
 
             Train_obj train = new Train_obj(40);
             int[] service_4_station = { 1, 1, 1, 0, 1 };
@@ -349,7 +363,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
+            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -365,12 +379,16 @@ namespace service_plan_core_test
         [Fact]
         public void Train_service_all_station()
         {
+            TF_Demand tfd = new TF_Demand(1440, 5, "TEST");
+
             int[,] demand = {
             { 0, 10, 10, 10, 10 },
             { 10, 0, 10, 10, 10 },
             { 10, 10, 0, 10, 10 },
             { 10, 10, 10, 0, 10 },
             { 10, 10, 10, 10, 0 } };
+
+            tfd.demand[0] = demand;
 
             Train_obj train = new Train_obj(40);
             int[] service_all_station = { 1, 1, 1, 1, 1 };
@@ -385,7 +403,7 @@ namespace service_plan_core_test
                 { 10, 10, 0, 3, 3 },
                 { 10, 10, 10, 0, 0 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(demand, train, forward[0]);
+            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
             for (int i=0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)

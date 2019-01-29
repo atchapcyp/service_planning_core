@@ -49,7 +49,7 @@ namespace service_plan_core
 
             //add demand to be time frame demand
 
-            TF_Demand passeng_demand = new TF_Demand(1440,5);
+            TF_Demand passeng_demand = new TF_Demand(720,5);
             TF_Demand outbound_demand = passeng_demand.Gen_Outbound_demand();
             TF_Demand inbound_demand = passeng_demand.Gen_Inbound_demand();
             for (int i = 0; i < passeng_demand.getTF_amount(); i++)
