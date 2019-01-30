@@ -135,7 +135,7 @@ namespace service_plan_core_test
             Train_obj train = new Train_obj(100);
             
             train.getOn(50,1);
-            train.getOff(50);
+            train.getOff(1);
             int actual = train.remain_cap;
             int expected = 100;
             Assert.Equal(expected, actual);
@@ -144,7 +144,7 @@ namespace service_plan_core_test
         [Fact]
         public void Test_getOn_TrainClass(){
             Train_obj train = new Train_obj(100);
-            train.getOn(5,1);
+            train.getOn(50,1);
             int actual = train.remain_cap;
             int expected = 50;
             Assert.Equal(expected, actual);
@@ -225,14 +225,14 @@ namespace service_plan_core_test
         [Fact]
         public void Train_service_3_station()
         {
-            TF_Demand tfd = new TF_Demand(1440, 5, "TEST");
+            TF_Demand tfd = new TF_Demand(1440, 5);
 
             int[,] demand = {
             { 0, 10, 10, 10, 10 },
-            { 10, 0, 10, 10, 10 },
-            { 10, 10, 0, 10, 10 },
-            { 10, 10, 10, 0, 10 },
-            { 10, 10, 10, 10, 0 } };
+            { 0, 0, 10, 10, 10 },
+            { 0, 0, 0, 10, 10 },
+            { 0, 0, 0, 0, 10 },
+            { 0, 0, 0, 0, 0 } };
 
             tfd.demand[0] = demand;
             Train_obj train = new Train_obj(10);
@@ -244,19 +244,21 @@ namespace service_plan_core_test
             int[,] expected =
             {
                 { 0,  10,  5, 10, 5 },
-                { 10, 0,  10, 10, 10 },
-                { 10, 10, 0, 10, 5 },
-                { 10, 10, 10, 0, 10 },
-                { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
+                { 0, 0,  10, 10, 10 },
+                { 0, 0, 0, 10, 5 },
+                { 0, 0, 0, 0, 10 },
+                { 0, 0, 0, 0, 0 } };
+            Service_algo.test_orchestrator_of_service(tfd, train, forward);
+    
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    Assert.Equal(expected[i, j], demand[i, j]);
+                    Assert.Equal(expected[i, j], tfd.demand[0][i, j]);
                 }
             }
-            Assert.Equal(expected, demand);
+
+       
 
         }
 
@@ -286,21 +288,21 @@ namespace service_plan_core_test
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
                 { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
+            Service_algo.test_orchestrator_of_service(tfd, train, forward);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    Assert.Equal(expected[i, j], demand[i, j]);
+                    Assert.Equal(expected[i, j],tfd.demand[0][i, j]);
                 }
             }
-            Assert.Equal(expected, demand);
+     
 
         }
         [Fact]
         public void Train_service_4_station()
         {
-            TF_Demand tfd = new TF_Demand(1440, 5, "TEST");
+            TF_Demand tfd = new TF_Demand(1440, 5);
 
             int[,] demand = {
             { 0, 10, 10, 10, 10 },
@@ -323,17 +325,15 @@ namespace service_plan_core_test
                 { 10, 0,  5, 10, 5 },
                 { 10, 10, 0, 10, 0 },
                 { 10, 10, 10, 0, 10 },
-                { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
+                { 10, 10, 10,10, 0 } };
+            Service_algo.test_orchestrator_of_service(tfd, train, forward);
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    Assert.Equal(expected[i, j], demand[i, j]);
+                    Assert.Equal(expected[i, j], tfd.demand[0][i, j]);
                 }
             }
-            Assert.Equal(expected, demand);
-
         }
 
         [Fact]
@@ -368,10 +368,10 @@ namespace service_plan_core_test
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    Assert.Equal(expected[i, j], demand[i, j]);
+                    Assert.Equal(expected[i, j],tfd.demand[0][i, j]);
                 }
             }
-            Assert.Equal(expected, demand);
+      
 
         }
 
@@ -401,23 +401,19 @@ namespace service_plan_core_test
                 { 0,  0,  0, 0, 0 },
                 { 10, 0,  6, 7, 7 },
                 { 10, 10, 0, 3, 3 },
-                { 10, 10, 10, 0, 0 },
-                { 10, 10, 10, 10, 0 } };
-            Service_algo.Train_a_b_c_d_e(tfd, train, forward[0],0);
+                { 10,10, 10, 0, 0 },
+                { 10, 10,10, 10, 0 } };
+            Service_algo.test_orchestrator_of_service(tfd, train, forward);
             for (int i=0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    Assert.Equal(expected[i, j], demand[i, j]);
+                    Assert.Equal(expected[i, j], tfd.demand[0][i, j]);
                 }
             }
-            Assert.Equal(expected, demand);
+           
 
         }
-
-
-
-
         
     }
 }

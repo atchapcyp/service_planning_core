@@ -49,8 +49,7 @@ namespace service_plan_core
                     }
                 }
 
-                int demand_at_station = 0;
-
+                int demand_at_station = 0; 
                 Console.WriteLine("Remainning Seat : " + train.remain_cap);
                 get_off_next_station = train.passenger[i];
                 Console.WriteLine("Number of getting off passenger at station " + i + " = " + get_off_next_station);
@@ -266,7 +265,7 @@ namespace service_plan_core
                 outbound_demand.get_demand(i);
                 while (!isDemandEmpty(outbound_demand.demand[i]))
                 {
-   
+
                     float p;
                     int s = 0;
                     (s, p) = index_of_most_utilize_service(outbound_demand.cal_demand, train, services);
@@ -285,12 +284,51 @@ namespace service_plan_core
                         }
                         break;
                     }
+                    Console.WriteLine("----IN ACTUAL ---- " +"\n\n");
                     actual_run(outbound_demand, train, services[s],i);
+                    Console.WriteLine("----OUT ACTUAL ---- " + "\n\n");
                 }
                 Console.WriteLine("----END--OF--orchestrate----LOOP--- "+i+"\n\n\n\n\n");
             }
             Console.WriteLine("----END--OF--orchestrate-------- ");
+        }
 
+        static public void test_orchestrator_of_service(TF_Demand outbound_demand, Train_obj train, List<Service> services)
+        {
+            for (int i = 0; i < outbound_demand.demand.Count; i++)
+            {
+                outbound_demand.get_demand(i);
+                while (!isDemandEmpty(outbound_demand.demand[i]))
+                {
+
+                    float p;
+                    int s = 0;
+                    (s, p) = index_of_most_utilize_service(outbound_demand.cal_demand, train, services);
+                    Console.WriteLine("\n\nthis is CARRY_matrix \n\n\n");
+                    showarray(outbound_demand.carry_matrix);
+                    Console.WriteLine("this is PERCENT " + p);
+                    if (p <= 60)
+                    {
+                        for (int out_loop = 0; out_loop < outbound_demand.dimension; out_loop++)
+                        {
+                            for (int in_loop = out_loop + 1; in_loop < outbound_demand.dimension; in_loop++)
+                            {
+                                if (outbound_demand.demand[i][out_loop, in_loop] > 0)
+                                {
+                                    outbound_demand.carry_matrix[out_loop, in_loop] = i;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    Console.WriteLine("----IN ACTUAL ---- " + "\n\n");
+                    actual_run(outbound_demand, train, services[s], i);
+                    Console.WriteLine("----OUT ACTUAL ---- " + "\n\n");
+                    break;
+                }
+                Console.WriteLine("----END--OF--orchestrate----LOOP--- " + i + "\n\n\n\n\n");
+            }
+            Console.WriteLine("----END--OF--orchestrate-------- ");
         }
 
 

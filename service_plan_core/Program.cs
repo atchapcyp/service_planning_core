@@ -22,11 +22,11 @@ namespace service_plan_core
             //int[,] unserve_demand;
             List<Service> outbound_services = new List<Service>();
             List<int[]> backward = new List<int[]>();
-            Train_obj train = new Train_obj(200);
-            int[] service = { 1, 1, 1, 1, 1 };
-            int[] service2 = { 1, 0, 1, 1, 1 };
+            Train_obj train = new Train_obj(10);
+            int[] service = { 1, 0, 1, 0, 1 };
+            int[] service2 = { 1, 0, 1, 0, 1 };
             //int[] service3 = { 1, 0, 0, 0, 1 };
-            int[] service4 = { 0, 1, 1, 1, 1 };
+            int[] service4 = { 1, 0, 1, 0, 1 };
             //int[] service5 = { 1, 0, 0, 1, 1 };
             //int[] service6 = { 1, 0, 1, 0, 1 };
             //int[] service7 = { 0, 1, 1, 0, 1 };
