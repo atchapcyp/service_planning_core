@@ -296,8 +296,6 @@ namespace service_plan_core_test
                     Assert.Equal(expected[i, j],tfd.demand[0][i, j]);
                 }
             }
-     
-
         }
         [Fact]
         public void Train_service_4_station()

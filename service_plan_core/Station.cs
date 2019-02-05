@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace service_plan_core
 {
     public class Station
@@ -10,9 +11,14 @@ namespace service_plan_core
                 {85,55,25,0,25},
                 {110,80,50,25,0}};
 
-        public Station()
-        {
+        public List<int[,]> demand_station = new List<int[,]>();
 
+        public Station(TF_Demand tf_demand)
+        {
+       
+            for (int i = 0; i < tf_demand.dimension;i++){
+                demand_station.Add(tf_demand.To_station_class(i));
+            }
         }
 
         public static int getDistance(int s,int d){

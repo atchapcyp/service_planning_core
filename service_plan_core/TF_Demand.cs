@@ -60,7 +60,7 @@ namespace service_plan_core
                     for (int j = 0; j < dimension; j++)
                     {
 
-                        subdemand[i, j] = GetRandomNumber(10  , 10);
+                        subdemand[i, j] = GetRandomNumber(50  , 100);
                         unserve_subdemand[i, j] = 0;
                         if (i == j)
                         {
@@ -248,6 +248,24 @@ namespace service_plan_core
                     cal_demand[out_loop, in_loop] += current_demand[out_loop, in_loop];
                 }
             }
+        }
+
+        public int[,] To_station_class(int arrived_station){
+            int[,] demand_class = new int[demand.Count, this.dimension];
+           
+            for (int i = 0; i < demand.Count; i++)
+            {
+
+                    for (int k = 0; k < this.dimension; k++)
+                {
+                    Console.WriteLine("i : %d arrive station : %d k : %d"+ i + arrived_station + k);
+                        demand_class[i,k] = this.demand[i][arrived_station, k];
+                    }
+                   
+
+            }
+            
+            return demand_class;
         }
     }
 }

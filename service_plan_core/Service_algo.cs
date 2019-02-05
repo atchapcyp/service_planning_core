@@ -458,7 +458,7 @@ namespace service_plan_core
                 int sum = 0;
                 for (l = 0; l < 5; l++)
                 {
-                    //Console.WriteLine("in_sum get off BEFORE : " + sum + " station : " + station + " l : " +l);
+                    Console.WriteLine("in_sum get off BEFORE : " + sum + " station : " + station + " l : " +l);
                     sum += actual_getoff[l, station];
                    
                 }
